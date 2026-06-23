@@ -1,59 +1,97 @@
-# it-ops-admin-web
+## 原则
 
+### 1. 编码前思考
 
-# 使用
+**不要假设，不要隐藏困惑，呈现权衡**
 
-安装依赖
+在实现之前：
+
+- 明确陈述你的假设，如果不确定，请提问
+- 如果存在多种解读，把它们都列出来，不要默默选择其一
+- 如果有更简单的方案，就指出来，在必要时提出反对意见
+- 如果有不清楚的地方，停下来，说出哪里让你困惑，然后提问
+
+### 2. 简洁优先
+
+**用最少的代码解决问题，不要过度推测**
+
+- 不要添加要求之外的功能
+- 不要为一次性代码创建抽象
+- 不要添加未要求的 "灵活性" 或 "可配置性"
+- 不要为不可能发生的场景做错误处理
+- 如果 200 行代码可以写成 50 行，重写它
+
+**检验标准：** 资深工程师会觉得这过于复杂吗？如果是，简化
+
+### 3. 精准修改
+
+**只碰必须碰的，只清理自己造成的混乱**
+
+编辑现有代码时：
+
+- 不要 "改进" 相邻的代码、注释或格式
+- 不要重构没坏的东西
+- 匹配现有风格，即使你更倾向于不同的写法
+- 如果注意到无关的死代码，提一下，不要删除它
+
+当你的改动产生孤儿代码时：
+
+- 删除因你的改动而变得无用的导入、变量或函数
+- 不要删除预先存在的死代码，除非被要求
+
+**检验标准：** 每一行修改都应该能直接追溯到用户的请求
+
+### 4. 目标驱动执行
+
+**定义成功标准，循环验证直到达成**
+
+将指令式任务转化为可验证的目标：
+
+"添加验证" → "为无效输入编写测试，然后让它们通过"
+"修复 bug" → "编写重现 bug 的测试，然后让它通过"
+"重构 X" → "确保重构前后测试都能通过"
+
+对于多步骤任务，说明一个简短的计划：
+
 ```
-pnpm i
+1. [步骤] → 验证: [检查]
+2. [步骤] → 验证: [检查]
+3. [步骤] → 验证: [检查]
 ```
 
-启动项目
-```
-pnpm dev
+明确有力的成功标准能让你独立循环推进，模糊的标准（"让它工作"）只会不断需要澄清
+
+## 命令
+
+```bash
+pnpm i # 安装依赖
+pnpm dev # 启动服务
+pnpm build:test # 打包构建预发布环境
+pnpm build # 打包构建生产环境
+pnpm preview # 先执行打包构建命令生成 dist 目录后再执行以下预览命令
+pnpm lint # 代码校验与格式化
+pnpm test # 单元测试
 ```
 
-构建项目
-```
-pnpm build
-```
+## 架构
 
-# npm scripts
-```
-{
-  // 构建打包(prod环境)
-  "build": "vite build --mode prod",
-  // 构建打包(test环境)
-  "build:test": "vite build --mode test",
-  // 删除主项目及子项目的 node_modules, dist, pnpm-lock.yaml
-  "cleanup": "sa cleanup",
-  // 提交代码 (生成符合 Conventional Commits standard 的提交信息)
-  "commit": "sa git-commit",
-  // 本地运行(test环境)
-  "dev": "vite --mode test",
-  // 本地运行(prod环境)
-  "dev:prod": "vite --mode prod",
-  // 生成路由
-  "gen-route": "sa gen-route",
-  // eslint检查并自动修复
-  "lint": "eslint . --fix",
-  // 初始化 simple-git-hooks
-  "prepare": "simple-git-hooks",
-  // 本地环境预览构建后的dist
-  "preview": "vite preview",
-  // 发布
-  "release": "sa release",
-  // vue文件的ts检查
-  "typecheck": "vue-tsc --noEmit --skipLibCheck",
-  // 更新依赖包
-  "update-pkg": "sa update-pkg"
-}
-```
+### 技术栈
 
+- 框架: Vue 3.5
+- 打包构建工具: Vite 7
+- 路由管理: Vue Router 5
+- 状态管理: Pinia 3
+- UI 组件库: Element Plus
+- CSS 预处理器: Scss
+- 代码校验与格式化: ESLint
+- 开发语言: TypeScript
+- 包管理工具: pnpm
+- 网络请求: Axios
 
-# 目录说明
-```
-soybean-admin
+### 目录结构
+
+```sh
+it-ops-admin-web
 ├── .vscode                        //vscode插件和设置
 │   ├── extensions.json            //vscode推荐的插件
 │   ├── launch.json                //debug配置文件(debug Vue 和 TS)
@@ -192,8 +230,14 @@ soybean-admin
 ├── package.json               //npm依赖描述文件
 ├── pnpm-lock.yaml             //npm包管理器pnpm依赖锁定文件
 ├── README.md                  //项目介绍文档
-├── README.zh-CN.md            //项目介绍文档(中文)
 ├── tsconfig.json              //TS配置
 ├── uno.config.ts              //原子css框架unocss配置
 └── vite.config.ts             //vite配置
 ```
+
+- 保持目录结构清晰，遵循现有目录规范
+- 同一个业务逻辑的代码和资源应当被收拢到了一起，避免在不同的目录间来回跳跃
+
+## 约定
+
+- 任何时候都禁止主动删除文件，必须经过同意
