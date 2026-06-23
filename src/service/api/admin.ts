@@ -27,6 +27,24 @@ function toUser(record: AdminUserRecord): Api.Admin.User {
   };
 }
 
+/** lightweight user options for selects (asset assignee, ticket handler, etc.) */
+export async function fetchGetUserOptions(role?: Api.Admin.UserRole) {
+  const result = await request<{ items: AdminUserRecord[] }>({
+    url: '/users',
+    method: 'get',
+    params: { role, status: 1, page: 1, page_size: 100 }
+  });
+
+  if (result.error || !result.data) {
+    return { ...result, data: null };
+  }
+
+  return {
+    ...result,
+    data: result.data.items.map((item): CommonType.Option<number> => ({ label: item.real_name, value: item.id }))
+  };
+}
+
 /** get user list */
 export async function fetchGetAdminUserList(params?: Api.Admin.UserSearchParams) {
   const result = await request<{

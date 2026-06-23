@@ -312,9 +312,11 @@ declare namespace App {
         columnSetting: string;
         config: string;
         confirm: string;
+        createTime: string;
         delete: string;
         deleteSuccess: string;
         confirmDelete: string;
+        detail: string;
         edit: string;
         warning: string;
         error: string;
@@ -557,6 +559,7 @@ declare namespace App {
         manage: {
           common: {
             status: {
+              title: string;
               enable: string;
               disable: string;
             };
@@ -683,6 +686,203 @@ declare namespace App {
               iconify: string;
               local: string;
             };
+          };
+          operationLog: {
+            title: string;
+            userName: string;
+            moduleName: string;
+            operationType: string;
+            requestMethod: string;
+            requestUrl: string;
+            requestIp: string;
+            operationResult: string;
+            errorMessage: string;
+            createTime: string;
+            result: {
+              success: string;
+              fail: string;
+            };
+          };
+        };
+        assetManage: {
+          assetCategory: {
+            title: string;
+            keyword: string;
+            categoryName: string;
+            categoryCode: string;
+            description: string;
+            form: {
+              keyword: string;
+              categoryName: string;
+              categoryCode: string;
+              description: string;
+            };
+            addCategory: string;
+            editCategory: string;
+          };
+          asset: {
+            title: string;
+            keyword: string;
+            assetNo: string;
+            assetName: string;
+            category: string;
+            brand: string;
+            model: string;
+            serialNo: string;
+            assignee: string;
+            department: string;
+            location: string;
+            status: string;
+            purchaseDate: string;
+            warrantyExpireDate: string;
+            remark: string;
+            form: {
+              keyword: string;
+              assetNo: string;
+              assetName: string;
+              category: string;
+              brand: string;
+              model: string;
+              serialNo: string;
+              assignee: string;
+              department: string;
+              location: string;
+              status: string;
+              purchaseDate: string;
+              warrantyExpireDate: string;
+              remark: string;
+            };
+            addAsset: string;
+            editAsset: string;
+            detail: string;
+            repairHistory: string;
+            statusType: {
+              inUse: string;
+              idle: string;
+              repairing: string;
+              scrapped: string;
+            };
+          };
+          repairRecord: {
+            title: string;
+            ticketNo: string;
+            ticketTitle: string;
+            assetNo: string;
+            assetName: string;
+            repairUser: string;
+            faultReason: string;
+            repairMethod: string;
+            repairResult: string;
+            repairCost: string;
+            repairedAt: string;
+            editRecord: string;
+            resultType: {
+              fixed: string;
+              replaceRepair: string;
+              scrapped: string;
+              unresolved: string;
+            };
+          };
+        };
+        ticket: {
+          title: string;
+          keyword: string;
+          ticketNo: string;
+          ticketTitle: string;
+          description: string;
+          faultType: string;
+          priority: string;
+          status: string;
+          reporter: string;
+          handler: string;
+          relatedAsset: string;
+          result: string;
+          addTicket: string;
+          editTicket: string;
+          detail: string;
+          form: {
+            keyword: string;
+            title: string;
+            description: string;
+            faultType: string;
+            relatedAsset: string;
+          };
+          statusType: {
+            pending: string;
+            assigned: string;
+            processing: string;
+            completed: string;
+            cancelled: string;
+          };
+          priorityType: {
+            low: string;
+            normal: string;
+            high: string;
+            urgent: string;
+          };
+          faultTypeType: {
+            hardware: string;
+            software: string;
+            network: string;
+            printer: string;
+            account: string;
+            other: string;
+          };
+          action: {
+            assign: string;
+            start: string;
+            complete: string;
+            cancel: string;
+          };
+          record: {
+            title: string;
+            create: string;
+            assign: string;
+            start: string;
+            finish: string;
+            cancel: string;
+          };
+          completeForm: {
+            result: string;
+            faultReason: string;
+            repairMethod: string;
+            repairResult: string;
+            repairCost: string;
+            assetStatusAfterRepair: string;
+            remark: string;
+          };
+          assignForm: {
+            handler: string;
+            remark: string;
+          };
+          cancelForm: {
+            reason: string;
+          };
+        };
+        faq: {
+          title: string;
+          keyword: string;
+          faqTitle: string;
+          category: string;
+          summary: string;
+          content: string;
+          sortOrder: string;
+          viewCount: string;
+          addFaq: string;
+          editFaq: string;
+          form: {
+            keyword: string;
+            title: string;
+            category: string;
+            summary: string;
+            content: string;
+          };
+          categoryType: {
+            computer: string;
+            network: string;
+            printer: string;
+            account: string;
+            other: string;
           };
         };
       };

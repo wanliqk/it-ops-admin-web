@@ -19,9 +19,11 @@ const local: App.I18n.Schema = {
     columnSetting: 'Column Setting',
     config: 'Config',
     confirm: 'Confirm',
+    createTime: 'Created At',
     delete: 'Delete',
     deleteSuccess: 'Delete Success',
     confirmDelete: 'Are you sure you want to delete?',
+    detail: 'Detail',
     edit: 'Edit',
     warning: 'Warning',
     error: 'Error',
@@ -194,6 +196,14 @@ const local: App.I18n.Schema = {
     'manage_user-detail': 'User Detail',
     manage_role: 'Role Manage',
     manage_menu: 'Menu Manage',
+    'manage_operation-log': 'Operation Logs',
+    ticket: 'Ticket Manage',
+    'ticket-detail': 'Ticket Detail',
+    faq: 'FAQ',
+    'asset-manage': 'Asset Manage',
+    'asset-manage_asset': 'Asset List',
+    'asset-manage_asset-category': 'Asset Category',
+    'asset-manage_repair-record': 'Repair Records',
     'multi-menu': 'Multi Menu',
     'multi-menu_first': 'Menu One',
     'multi-menu_first_child': 'Menu One Child',
@@ -371,6 +381,7 @@ const local: App.I18n.Schema = {
     manage: {
       common: {
         status: {
+          title: 'Status',
           enable: 'Enable',
           disable: 'Disable'
         }
@@ -497,6 +508,203 @@ const local: App.I18n.Schema = {
           iconify: 'Iconify Icon',
           local: 'Local Icon'
         }
+      },
+      operationLog: {
+        title: 'Operation Logs',
+        userName: 'Operator',
+        moduleName: 'Module',
+        operationType: 'Operation Type',
+        requestMethod: 'Request Method',
+        requestUrl: 'Request URL',
+        requestIp: 'Request IP',
+        operationResult: 'Result',
+        errorMessage: 'Error Message',
+        createTime: 'Operated At',
+        result: {
+          success: 'Success',
+          fail: 'Fail'
+        }
+      }
+    },
+    assetManage: {
+      assetCategory: {
+        title: 'Asset Category List',
+        keyword: 'Keyword',
+        categoryName: 'Category Name',
+        categoryCode: 'Category Code',
+        description: 'Description',
+        form: {
+          keyword: 'Please enter category name or code',
+          categoryName: 'Please enter category name',
+          categoryCode: 'Please enter category code',
+          description: 'Please enter description'
+        },
+        addCategory: 'Add Category',
+        editCategory: 'Edit Category'
+      },
+      asset: {
+        title: 'Asset List',
+        keyword: 'Keyword',
+        assetNo: 'Asset No.',
+        assetName: 'Asset Name',
+        category: 'Category',
+        brand: 'Brand',
+        model: 'Model',
+        serialNo: 'Serial No.',
+        assignee: 'Assignee',
+        department: 'Department',
+        location: 'Location',
+        status: 'Status',
+        purchaseDate: 'Purchase Date',
+        warrantyExpireDate: 'Warranty Expires',
+        remark: 'Remark',
+        form: {
+          keyword: 'Please enter asset no., name, brand or serial no.',
+          assetNo: 'Please enter asset no.',
+          assetName: 'Please enter asset name',
+          category: 'Please select category',
+          brand: 'Please enter brand',
+          model: 'Please enter model',
+          serialNo: 'Please enter serial no.',
+          assignee: 'Please select assignee',
+          department: 'Please enter department',
+          location: 'Please enter location',
+          status: 'Please select status',
+          purchaseDate: 'Please select purchase date',
+          warrantyExpireDate: 'Please select warranty expiry date',
+          remark: 'Please enter remark'
+        },
+        addAsset: 'Add Asset',
+        editAsset: 'Edit Asset',
+        detail: 'Asset Detail',
+        repairHistory: 'Repair History',
+        statusType: {
+          inUse: 'In Use',
+          idle: 'Idle',
+          repairing: 'Repairing',
+          scrapped: 'Scrapped'
+        }
+      },
+      repairRecord: {
+        title: 'Repair Record List',
+        ticketNo: 'Ticket No.',
+        ticketTitle: 'Ticket Title',
+        assetNo: 'Asset No.',
+        assetName: 'Asset Name',
+        repairUser: 'Repaired By',
+        faultReason: 'Fault Reason',
+        repairMethod: 'Repair Method',
+        repairResult: 'Repair Result',
+        repairCost: 'Repair Cost',
+        repairedAt: 'Repaired At',
+        editRecord: 'Edit Repair Record',
+        resultType: {
+          fixed: 'Fixed',
+          replaceRepair: 'Fixed After Replacement',
+          scrapped: 'Recommend Scrapping',
+          unresolved: 'Unresolved'
+        }
+      }
+    },
+    ticket: {
+      title: 'Ticket List',
+      keyword: 'Keyword',
+      ticketNo: 'Ticket No.',
+      ticketTitle: 'Title',
+      description: 'Description',
+      faultType: 'Fault Type',
+      priority: 'Priority',
+      status: 'Status',
+      reporter: 'Reporter',
+      handler: 'Handler',
+      relatedAsset: 'Related Asset',
+      result: 'Result',
+      addTicket: 'New Ticket',
+      editTicket: 'Edit Ticket',
+      detail: 'Ticket Detail',
+      form: {
+        keyword: 'Please enter ticket no., title or description',
+        title: 'Please enter ticket title',
+        description: 'Please describe the issue',
+        faultType: 'Please select fault type',
+        relatedAsset: 'Please select related asset (optional)'
+      },
+      statusType: {
+        pending: 'Pending',
+        assigned: 'Assigned',
+        processing: 'Processing',
+        completed: 'Completed',
+        cancelled: 'Cancelled'
+      },
+      priorityType: {
+        low: 'Low',
+        normal: 'Normal',
+        high: 'High',
+        urgent: 'Urgent'
+      },
+      faultTypeType: {
+        hardware: 'Hardware',
+        software: 'Software',
+        network: 'Network',
+        printer: 'Printer',
+        account: 'Account',
+        other: 'Other'
+      },
+      action: {
+        assign: 'Assign',
+        start: 'Start Processing',
+        complete: 'Complete',
+        cancel: 'Cancel'
+      },
+      record: {
+        title: 'Processing Records',
+        create: 'Ticket Created',
+        assign: 'Assigned',
+        start: 'Started Processing',
+        finish: 'Completed',
+        cancel: 'Cancelled'
+      },
+      completeForm: {
+        result: 'Result Description',
+        faultReason: 'Fault Reason',
+        repairMethod: 'Repair Method',
+        repairResult: 'Repair Result',
+        repairCost: 'Repair Cost',
+        assetStatusAfterRepair: 'Asset Status After Repair',
+        remark: 'Remark'
+      },
+      assignForm: {
+        handler: 'Handler',
+        remark: 'Remark'
+      },
+      cancelForm: {
+        reason: 'Cancellation Reason'
+      }
+    },
+    faq: {
+      title: 'FAQ List',
+      keyword: 'Keyword',
+      faqTitle: 'Title',
+      category: 'Category',
+      summary: 'Summary',
+      content: 'Content',
+      sortOrder: 'Sort Order',
+      viewCount: 'Views',
+      addFaq: 'Add FAQ',
+      editFaq: 'Edit FAQ',
+      form: {
+        keyword: 'Please enter title, summary or content keyword',
+        title: 'Please enter question title',
+        category: 'Please select category',
+        summary: 'Please enter summary',
+        content: 'Please enter detailed content'
+      },
+      categoryType: {
+        computer: 'Computer',
+        network: 'Network',
+        printer: 'Printer',
+        account: 'Account',
+        other: 'Other'
       }
     }
   },

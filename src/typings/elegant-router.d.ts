@@ -39,6 +39,11 @@ declare module "@elegant-router/types" {
     "alova_request": "/alova/request";
     "alova_scenes": "/alova/scenes";
     "alova_user": "/alova/user";
+    "asset-manage": "/asset-manage";
+    "asset-manage_asset": "/asset-manage/asset";
+    "asset-manage_asset-category": "/asset-manage/asset-category";
+    "asset-manage_repair-record": "/asset-manage/repair-record";
+    "faq": "/faq";
     "function": "/function";
     "function_hide-child": "/function/hide-child";
     "function_hide-child_one": "/function/hide-child/one";
@@ -54,6 +59,7 @@ declare module "@elegant-router/types" {
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
     "manage": "/manage";
     "manage_menu": "/manage/menu";
+    "manage_operation-log": "/manage/operation-log";
     "manage_role": "/manage/role";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
@@ -87,6 +93,8 @@ declare module "@elegant-router/types" {
     "plugin_tables_vtable": "/plugin/tables/vtable";
     "plugin_typeit": "/plugin/typeit";
     "plugin_video": "/plugin/video";
+    "ticket": "/ticket";
+    "ticket-detail": "/ticket-detail/:id";
     "user-center": "/user-center";
   };
 
@@ -138,6 +146,8 @@ declare module "@elegant-router/types" {
     | "500"
     | "about"
     | "alova"
+    | "asset-manage"
+    | "faq"
     | "function"
     | "home"
     | "iframe-page"
@@ -145,6 +155,8 @@ declare module "@elegant-router/types" {
     | "manage"
     | "multi-menu"
     | "plugin"
+    | "ticket"
+    | "ticket-detail"
     | "user-center"
   >;
 
@@ -173,6 +185,10 @@ declare module "@elegant-router/types" {
     | "alova_request"
     | "alova_scenes"
     | "alova_user"
+    | "asset-manage_asset-category"
+    | "asset-manage_asset"
+    | "asset-manage_repair-record"
+    | "faq"
     | "function_hide-child_one"
     | "function_hide-child_three"
     | "function_hide-child_two"
@@ -183,6 +199,7 @@ declare module "@elegant-router/types" {
     | "function_toggle-auth"
     | "home"
     | "manage_menu"
+    | "manage_operation-log"
     | "manage_role"
     | "manage_user-detail"
     | "manage_user"
@@ -207,6 +224,8 @@ declare module "@elegant-router/types" {
     | "plugin_tables_vtable"
     | "plugin_typeit"
     | "plugin_video"
+    | "ticket-detail"
+    | "ticket"
     | "user-center"
   >;
 

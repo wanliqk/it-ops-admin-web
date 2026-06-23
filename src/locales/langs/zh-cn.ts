@@ -19,9 +19,11 @@ const local: App.I18n.Schema = {
     columnSetting: '列设置',
     config: '配置',
     confirm: '确认',
+    createTime: '创建时间',
     delete: '删除',
     deleteSuccess: '删除成功',
     confirmDelete: '确认删除吗？',
+    detail: '详情',
     edit: '编辑',
     warning: '警告',
     error: '错误',
@@ -194,6 +196,14 @@ const local: App.I18n.Schema = {
     'manage_user-detail': '用户详情',
     manage_role: '角色管理',
     manage_menu: '菜单管理',
+    'manage_operation-log': '操作日志',
+    ticket: '工单管理',
+    'ticket-detail': '工单详情',
+    faq: '常见问题',
+    'asset-manage': '资产管理',
+    'asset-manage_asset': '资产清单',
+    'asset-manage_asset-category': '资产分类',
+    'asset-manage_repair-record': '维修记录',
     'multi-menu': '多级菜单',
     'multi-menu_first': '菜单一',
     'multi-menu_first_child': '菜单一子菜单',
@@ -371,6 +381,7 @@ const local: App.I18n.Schema = {
     manage: {
       common: {
         status: {
+          title: '状态',
           enable: '启用',
           disable: '禁用'
         }
@@ -497,6 +508,203 @@ const local: App.I18n.Schema = {
           iconify: 'iconify图标',
           local: '本地图标'
         }
+      },
+      operationLog: {
+        title: '操作日志',
+        userName: '操作用户',
+        moduleName: '操作模块',
+        operationType: '操作类型',
+        requestMethod: '请求方式',
+        requestUrl: '请求地址',
+        requestIp: '请求IP',
+        operationResult: '操作结果',
+        errorMessage: '错误信息',
+        createTime: '操作时间',
+        result: {
+          success: '成功',
+          fail: '失败'
+        }
+      }
+    },
+    assetManage: {
+      assetCategory: {
+        title: '资产分类列表',
+        keyword: '关键字',
+        categoryName: '分类名称',
+        categoryCode: '分类编码',
+        description: '分类描述',
+        form: {
+          keyword: '请输入分类名称或编码',
+          categoryName: '请输入分类名称',
+          categoryCode: '请输入分类编码',
+          description: '请输入分类描述'
+        },
+        addCategory: '新增分类',
+        editCategory: '编辑分类'
+      },
+      asset: {
+        title: '资产列表',
+        keyword: '关键字',
+        assetNo: '资产编号',
+        assetName: '资产名称',
+        category: '资产分类',
+        brand: '品牌',
+        model: '型号',
+        serialNo: '序列号',
+        assignee: '使用人',
+        department: '所属部门',
+        location: '存放位置',
+        status: '资产状态',
+        purchaseDate: '采购日期',
+        warrantyExpireDate: '保修截止日期',
+        remark: '备注',
+        form: {
+          keyword: '请输入资产编号、名称、品牌或序列号',
+          assetNo: '请输入资产编号',
+          assetName: '请输入资产名称',
+          category: '请选择资产分类',
+          brand: '请输入品牌',
+          model: '请输入型号',
+          serialNo: '请输入序列号',
+          assignee: '请选择使用人',
+          department: '请输入所属部门',
+          location: '请输入存放位置',
+          status: '请选择资产状态',
+          purchaseDate: '请选择采购日期',
+          warrantyExpireDate: '请选择保修截止日期',
+          remark: '请输入备注'
+        },
+        addAsset: '新增资产',
+        editAsset: '编辑资产',
+        detail: '资产详情',
+        repairHistory: '维修历史',
+        statusType: {
+          inUse: '在用',
+          idle: '闲置',
+          repairing: '维修中',
+          scrapped: '已报废'
+        }
+      },
+      repairRecord: {
+        title: '维修记录列表',
+        ticketNo: '工单编号',
+        ticketTitle: '工单标题',
+        assetNo: '资产编号',
+        assetName: '资产名称',
+        repairUser: '维修人',
+        faultReason: '故障原因',
+        repairMethod: '维修方法',
+        repairResult: '维修结果',
+        repairCost: '维修费用',
+        repairedAt: '维修时间',
+        editRecord: '编辑维修记录',
+        resultType: {
+          fixed: '已修复',
+          replaceRepair: '更换部件后修复',
+          scrapped: '建议报废',
+          unresolved: '未解决'
+        }
+      }
+    },
+    ticket: {
+      title: '工单列表',
+      keyword: '关键字',
+      ticketNo: '工单编号',
+      ticketTitle: '工单标题',
+      description: '故障描述',
+      faultType: '故障类型',
+      priority: '优先级',
+      status: '工单状态',
+      reporter: '报修人',
+      handler: '处理人',
+      relatedAsset: '关联资产',
+      result: '处理结果',
+      addTicket: '新建工单',
+      editTicket: '编辑工单',
+      detail: '工单详情',
+      form: {
+        keyword: '请输入工单编号、标题或描述',
+        title: '请输入工单标题',
+        description: '请输入故障描述',
+        faultType: '请选择故障类型',
+        relatedAsset: '请选择关联资产（可不选）'
+      },
+      statusType: {
+        pending: '待分派',
+        assigned: '已分派',
+        processing: '处理中',
+        completed: '已完成',
+        cancelled: '已取消'
+      },
+      priorityType: {
+        low: '低',
+        normal: '普通',
+        high: '高',
+        urgent: '紧急'
+      },
+      faultTypeType: {
+        hardware: '硬件故障',
+        software: '软件故障',
+        network: '网络故障',
+        printer: '打印机故障',
+        account: '账号权限问题',
+        other: '其他'
+      },
+      action: {
+        assign: '分派',
+        start: '开始处理',
+        complete: '完成工单',
+        cancel: '取消工单'
+      },
+      record: {
+        title: '处理记录',
+        create: '提交工单',
+        assign: '分派工单',
+        start: '开始处理',
+        finish: '完成工单',
+        cancel: '取消工单'
+      },
+      completeForm: {
+        result: '处理结果说明',
+        faultReason: '故障原因',
+        repairMethod: '维修方法',
+        repairResult: '维修结果',
+        repairCost: '维修费用',
+        assetStatusAfterRepair: '维修后资产状态',
+        remark: '备注'
+      },
+      assignForm: {
+        handler: '处理人',
+        remark: '备注'
+      },
+      cancelForm: {
+        reason: '取消原因'
+      }
+    },
+    faq: {
+      title: 'FAQ 列表',
+      keyword: '关键字',
+      faqTitle: '标题',
+      category: '分类',
+      summary: '摘要',
+      content: '详细内容',
+      sortOrder: '排序',
+      viewCount: '浏览次数',
+      addFaq: '新增 FAQ',
+      editFaq: '编辑 FAQ',
+      form: {
+        keyword: '请输入标题、摘要或内容关键字',
+        title: '请输入问题标题',
+        category: '请选择分类',
+        summary: '请输入问题摘要',
+        content: '请输入问题详细内容'
+      },
+      categoryType: {
+        computer: '电脑问题',
+        network: '网络问题',
+        printer: '打印机问题',
+        account: '账号系统问题',
+        other: '其他问题'
       }
     }
   },

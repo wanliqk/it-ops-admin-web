@@ -185,6 +185,11 @@ const routeMap: RouteMap = {
   "alova_request": "/alova/request",
   "alova_scenes": "/alova/scenes",
   "alova_user": "/alova/user",
+  "asset-manage": "/asset-manage",
+  "asset-manage_asset": "/asset-manage/asset",
+  "asset-manage_asset-category": "/asset-manage/asset-category",
+  "asset-manage_repair-record": "/asset-manage/repair-record",
+  "faq": "/faq",
   "function": "/function",
   "function_hide-child": "/function/hide-child",
   "function_hide-child_one": "/function/hide-child/one",
@@ -200,6 +205,7 @@ const routeMap: RouteMap = {
   "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?",
   "manage": "/manage",
   "manage_menu": "/manage/menu",
+  "manage_operation-log": "/manage/operation-log",
   "manage_role": "/manage/role",
   "manage_user": "/manage/user",
   "manage_user-detail": "/manage/user-detail/:id",
@@ -233,6 +239,8 @@ const routeMap: RouteMap = {
   "plugin_tables_vtable": "/plugin/tables/vtable",
   "plugin_typeit": "/plugin/typeit",
   "plugin_video": "/plugin/video",
+  "ticket": "/ticket",
+  "ticket-detail": "/ticket-detail/:id",
   "user-center": "/user-center"
 };
 

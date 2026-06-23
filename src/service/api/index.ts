@@ -4,3 +4,8 @@ export * from './system-manage';
 export * from './dashboard';
 export * from './rbac';
 export * from './admin';
+export * from './asset';
+export * from './ticket';
+export * from './repair-record';
+export * from './operation-log';
+export * from './faq';

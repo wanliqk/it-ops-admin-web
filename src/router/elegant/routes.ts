@@ -96,6 +96,67 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
+    name: 'asset-manage',
+    path: '/asset-manage',
+    component: 'layout.base',
+    meta: {
+      title: 'asset-manage',
+      i18nKey: 'route.asset-manage',
+      icon: 'mdi:archive-outline',
+      order: 3,
+      roles: ['admin', 'it_staff']
+    },
+    children: [
+      {
+        name: 'asset-manage_asset',
+        path: '/asset-manage/asset',
+        component: 'view.asset-manage_asset',
+        meta: {
+          title: 'asset-manage_asset',
+          i18nKey: 'route.asset-manage_asset',
+          icon: 'mdi:laptop',
+          order: 1,
+          roles: ['admin', 'it_staff']
+        }
+      },
+      {
+        name: 'asset-manage_asset-category',
+        path: '/asset-manage/asset-category',
+        component: 'view.asset-manage_asset-category',
+        meta: {
+          title: 'asset-manage_asset-category',
+          i18nKey: 'route.asset-manage_asset-category',
+          icon: 'mdi:shape-outline',
+          order: 2,
+          roles: ['admin']
+        }
+      },
+      {
+        name: 'asset-manage_repair-record',
+        path: '/asset-manage/repair-record',
+        component: 'view.asset-manage_repair-record',
+        meta: {
+          title: 'asset-manage_repair-record',
+          i18nKey: 'route.asset-manage_repair-record',
+          icon: 'mdi:wrench-outline',
+          order: 3,
+          roles: ['admin', 'it_staff']
+        }
+      }
+    ]
+  },
+  {
+    name: 'faq',
+    path: '/faq',
+    component: 'layout.base$view.faq',
+    meta: {
+      title: 'faq',
+      i18nKey: 'route.faq',
+      icon: 'mdi:frequently-asked-questions',
+      order: 4
+    }
+  },
+  {
     name: 'function',
     path: '/function',
     component: 'layout.base',
@@ -272,6 +333,18 @@ export const generatedRoutes: GeneratedRoute[] = [
           order: 3,
           roles: ['R_ADMIN'],
           keepAlive: true
+        }
+      },
+      {
+        name: 'manage_operation-log',
+        path: '/manage/operation-log',
+        component: 'view.manage_operation-log',
+        meta: {
+          title: 'manage_operation-log',
+          i18nKey: 'route.manage_operation-log',
+          icon: 'mdi:history',
+          order: 4,
+          roles: ['admin']
         }
       },
       {
@@ -622,6 +695,29 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       }
     ]
+  },
+  {
+    name: 'ticket',
+    path: '/ticket',
+    component: 'layout.base$view.ticket',
+    meta: {
+      title: 'ticket',
+      i18nKey: 'route.ticket',
+      icon: 'mdi:ticket-confirmation-outline',
+      order: 2
+    }
+  },
+  {
+    name: 'ticket-detail',
+    path: '/ticket-detail/:id',
+    component: 'layout.base$view.ticket-detail',
+    props: true,
+    meta: {
+      title: 'ticket-detail',
+      i18nKey: 'route.ticket-detail',
+      hideInMenu: true,
+      activeMenu: 'ticket'
+    }
   },
   {
     name: 'user-center',
