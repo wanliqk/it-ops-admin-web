@@ -13,9 +13,12 @@ const { baseURL, otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy
 export const request = createFlatRequest(
   {
     baseURL,
-    headers: {
-      apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'
-    }
+    // this backend signals success/failure via the JSON `code` field (handled by `isBackendSuccess` /
+    // `onBackendFail` below), but also returns matching non-2xx HTTP statuses (e.g. 409, 401) for the same
+    // errors per admin-api-v1.md 2.2. Without this, axios's default `validateStatus` would reject those
+    // responses before `isBackendSuccess`/`onBackendFail` ever run, bypassing the real error message and
+    // the 401-triggers-logout logic entirely.
+    validateStatus: () => true
   },
   {
     defaultState: {

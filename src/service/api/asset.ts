@@ -222,12 +222,20 @@ export function fetchDeleteAsset(assetId: number) {
   });
 }
 
-/** backend shape of an asset's repair history item, see admin-api-v1.md 8.7 */
+/**
+ * backend shape of an asset's repair history item.
+ *
+ * Note: the running backend wraps this in the same `{items, total, page, page_size, pages}` paginated
+ * envelope used everywhere else, not the flat array admin-api-v1.md 8.7's example shows.
+ */
 interface AssetRepairRecordItem {
   id: number;
   ticket_id: number;
   ticket_no: string;
   ticket_title: string;
+  asset_id?: number;
+  asset_no?: string;
+  asset_name?: string;
   repair_user_id: number;
   repair_user_name: string;
   fault_reason: string;
@@ -239,23 +247,26 @@ interface AssetRepairRecordItem {
 
 /** get an asset's repair history */
 export async function fetchGetAssetRepairRecords(assetId: number) {
-  const result = await request<AssetRepairRecordItem[]>({
+  const result = await request<{ items: AssetRepairRecordItem[] }>({
     url: `/assets/${assetId}/repair-records`,
     method: 'get'
   });
 
   if (result.error || !result.data) {
-    return result;
+    return { ...result, data: null };
   }
 
   return {
     ...result,
-    data: result.data.map(
+    data: result.data.items.map(
       (item): Api.Asset.RepairRecord => ({
         id: item.id,
         ticketId: item.ticket_id,
         ticketNo: item.ticket_no,
         ticketTitle: item.ticket_title,
+        assetId: item.asset_id,
+        assetNo: item.asset_no,
+        assetName: item.asset_name,
         repairUserId: item.repair_user_id,
         repairUserName: item.repair_user_name,
         faultReason: item.fault_reason,

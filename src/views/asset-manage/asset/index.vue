@@ -64,7 +64,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       prop: 'operate',
       label: $t('common.operate'),
       align: 'center',
-      width: 260,
+      width: 330,
       formatter: row => (
         <div class="flex-center gap-8px">
           <ElButton plain size="small" onClick={() => viewDetail(row)}>

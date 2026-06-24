@@ -69,7 +69,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       prop: 'operate',
       label: $t('common.operate'),
       align: 'center',
-      width: 220,
+      width: 320,
       formatter: row => (
         <div class="flex-center gap-8px">
           <ElButton v-permission="user:update" type="primary" plain size="small" onClick={() => edit(row.id)}>
