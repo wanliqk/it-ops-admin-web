@@ -197,6 +197,7 @@ const local: App.I18n.Schema = {
     manage_role: '角色管理',
     manage_menu: '菜单管理',
     'manage_operation-log': '操作日志',
+    'manage_sla-rule': 'SLA规则管理',
     ticket: '工单管理',
     'ticket-detail': '工单详情',
     faq: '常见问题',
@@ -526,6 +527,30 @@ const local: App.I18n.Schema = {
           success: '成功',
           fail: '失败'
         }
+      },
+      slaRule: {
+        title: 'SLA 规则列表',
+        name: '规则名称',
+        ticketCategory: '工单类型',
+        allCategories: '通用',
+        priority: '优先级',
+        responseMinutes: '响应时限',
+        resolveMinutes: '处理时限',
+        minutes: '分钟',
+        sortOrder: '排序值',
+        addRule: '新增 SLA 规则',
+        editRule: '编辑 SLA 规则',
+        form: {
+          name: '请输入规则名称',
+          ticketCategory: '不选表示通用规则',
+          priority: '请选择优先级',
+          responseMinutesInvalid: '响应时限必须大于 0',
+          resolveMinutesInvalid: '处理时限必须大于 0',
+          resolveMinutesTooSmall: '处理时限必须大于或等于响应时限'
+        },
+        priorityType: {
+          medium: '普通'
+        }
       }
     },
     assetManage: {
@@ -681,6 +706,29 @@ const local: App.I18n.Schema = {
       },
       cancelForm: {
         reason: '取消原因'
+      },
+      slaInfo: 'SLA 信息',
+      slaResponseDeadline: '响应截止时间',
+      slaResolveDeadline: '处理截止时间',
+      firstResponseAt: '首次响应时间',
+      resolvedAt: '完成时间',
+      slaStatus: 'SLA 状态',
+      slaStatusType: {
+        normal: '正常',
+        responseOverdue: '响应超时',
+        resolveOverdue: '处理超时'
+      },
+      responseStatus: '响应状态',
+      resolveStatus: '处理状态',
+      responseStatusType: {
+        responded: '已响应',
+        unresponded: '未响应',
+        overdue: '响应超时'
+      },
+      resolveStatusType: {
+        resolved: '已完成',
+        unresolved: '未完成',
+        overdue: '处理超时'
       }
     },
     faq: {

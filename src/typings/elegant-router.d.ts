@@ -61,6 +61,7 @@ declare module "@elegant-router/types" {
     "manage_menu": "/manage/menu";
     "manage_operation-log": "/manage/operation-log";
     "manage_role": "/manage/role";
+    "manage_sla-rule": "/manage/sla-rule";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
     "multi-menu": "/multi-menu";
@@ -203,6 +204,7 @@ declare module "@elegant-router/types" {
     | "manage_menu"
     | "manage_operation-log"
     | "manage_role"
+    | "manage_sla-rule"
     | "manage_user-detail"
     | "manage_user"
     | "multi-menu_first_child"

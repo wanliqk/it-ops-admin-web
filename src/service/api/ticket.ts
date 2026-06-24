@@ -17,6 +17,12 @@ interface TicketRecordItem {
   asset_name: string | null;
   created_at: string;
   completed_at: string | null;
+  sla_response_deadline: string | null;
+  sla_resolve_deadline: string | null;
+  first_response_at: string | null;
+  resolved_at: string | null;
+  response_overdue: number;
+  resolve_overdue: number;
 }
 
 function toTicket(record: TicketRecordItem): Api.Ticket.Ticket {
@@ -35,7 +41,13 @@ function toTicket(record: TicketRecordItem): Api.Ticket.Ticket {
     assetNo: record.asset_no,
     assetName: record.asset_name,
     createTime: record.created_at,
-    completedAt: record.completed_at
+    completedAt: record.completed_at,
+    slaResponseDeadline: record.sla_response_deadline,
+    slaResolveDeadline: record.sla_resolve_deadline,
+    firstResponseAt: record.first_response_at,
+    resolvedAt: record.resolved_at,
+    responseOverdue: record.response_overdue,
+    resolveOverdue: record.resolve_overdue
   };
 }
 

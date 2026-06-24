@@ -27,6 +27,15 @@ declare namespace Api {
       assetName: string | null;
       createTime: string;
       completedAt: string | null;
+      /** SLA fields, admin-api-v1.md 9.1/18.6 */
+      slaResponseDeadline: string | null;
+      slaResolveDeadline: string | null;
+      firstResponseAt: string | null;
+      resolvedAt: string | null;
+      /** 1: response is overdue, 0: not (yet) overdue */
+      responseOverdue: number;
+      /** 1: resolution is overdue, 0: not (yet) overdue */
+      resolveOverdue: number;
     }
 
     type TicketSearchParams = CommonType.RecordNullable<

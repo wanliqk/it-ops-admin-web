@@ -360,6 +360,18 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_sla-rule',
+        path: '/manage/sla-rule',
+        component: 'view.manage_sla-rule',
+        meta: {
+          title: 'manage_sla-rule',
+          i18nKey: 'route.manage_sla-rule',
+          icon: 'mdi:timer-alert-outline',
+          order: 5,
+          roles: ['admin']
+        }
+      },
+      {
         name: 'manage_user',
         path: '/manage/user',
         component: 'view.manage_user',

@@ -41,6 +41,24 @@ const priorityTagType: Record<Api.Ticket.TicketPriority, UI.ThemeColor> = {
   urgent: 'danger'
 };
 
+/**
+ * combined SLA status for the list column: response_overdue / resolve_overdue can both be set at once, per
+ * admin-api-v1.md 18.6/18.7 — show whichever apply, or "normal" if neither does
+ */
+function getSlaStatusLabels(row: Api.Ticket.Ticket): string[] {
+  const labels: string[] = [];
+
+  if (row.responseOverdue === 1) {
+    labels.push($t('page.ticket.slaStatusType.responseOverdue'));
+  }
+
+  if (row.resolveOverdue === 1) {
+    labels.push($t('page.ticket.slaStatusType.resolveOverdue'));
+  }
+
+  return labels;
+}
+
 const searchParams = ref(getInitSearchParams());
 
 function getInitSearchParams(): Api.Ticket.TicketSearchParams {
@@ -83,6 +101,40 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
     { prop: 'reporterName', label: $t('page.ticket.reporter'), width: 100 },
     { prop: 'handlerName', label: $t('page.ticket.handler'), width: 100 },
     { prop: 'createTime', label: $t('common.createTime'), width: 160 },
+    {
+      prop: 'slaResponseDeadline',
+      label: $t('page.ticket.slaResponseDeadline'),
+      width: 160,
+      formatter: row => row.slaResponseDeadline ?? '-'
+    },
+    {
+      prop: 'slaResolveDeadline',
+      label: $t('page.ticket.slaResolveDeadline'),
+      width: 160,
+      formatter: row => row.slaResolveDeadline ?? '-'
+    },
+    {
+      prop: 'slaStatus',
+      label: $t('page.ticket.slaStatus'),
+      width: 160,
+      formatter: row => {
+        const labels = getSlaStatusLabels(row);
+
+        if (labels.length === 0) {
+          return <ElTag type="success">{$t('page.ticket.slaStatusType.normal')}</ElTag>;
+        }
+
+        return (
+          <div class="flex-center gap-4px">
+            {labels.map(label => (
+              <ElTag key={label} type="danger">
+                {label}
+              </ElTag>
+            ))}
+          </div>
+        );
+      }
+    },
     {
       prop: 'operate',
       label: $t('common.operate'),

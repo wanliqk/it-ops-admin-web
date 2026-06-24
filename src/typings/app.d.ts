@@ -704,6 +704,30 @@ declare namespace App {
               fail: string;
             };
           };
+          slaRule: {
+            title: string;
+            name: string;
+            ticketCategory: string;
+            allCategories: string;
+            priority: string;
+            responseMinutes: string;
+            resolveMinutes: string;
+            minutes: string;
+            sortOrder: string;
+            addRule: string;
+            editRule: string;
+            form: {
+              name: string;
+              ticketCategory: string;
+              priority: string;
+              responseMinutesInvalid: string;
+              resolveMinutesInvalid: string;
+              resolveMinutesTooSmall: string;
+            };
+            priorityType: {
+              medium: string;
+            };
+          };
         };
         assetManage: {
           assetCategory: {
@@ -858,6 +882,29 @@ declare namespace App {
           };
           cancelForm: {
             reason: string;
+          };
+          slaInfo: string;
+          slaResponseDeadline: string;
+          slaResolveDeadline: string;
+          firstResponseAt: string;
+          resolvedAt: string;
+          slaStatus: string;
+          slaStatusType: {
+            normal: string;
+            responseOverdue: string;
+            resolveOverdue: string;
+          };
+          responseStatus: string;
+          resolveStatus: string;
+          responseStatusType: {
+            responded: string;
+            unresponded: string;
+            overdue: string;
+          };
+          resolveStatusType: {
+            resolved: string;
+            unresolved: string;
+            overdue: string;
           };
         };
         faq: {

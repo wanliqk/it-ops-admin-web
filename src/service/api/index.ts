@@ -10,3 +10,4 @@ export * from './repair-record';
 export * from './operation-log';
 export * from './faq';
 export * from './notification';
+export * from './sla';

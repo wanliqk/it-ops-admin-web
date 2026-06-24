@@ -87,6 +87,32 @@ const recordActionLabel: Record<string, string> = {
   cancel: $t('page.ticket.record.cancel')
 };
 
+/** response_overdue takes precedence (it's only ever 1 while first_response_at is still null) */
+const responseStatus = computed(() => {
+  if (detail.value?.responseOverdue === 1) {
+    return { label: $t('page.ticket.responseStatusType.overdue'), type: 'danger' as UI.ThemeColor };
+  }
+
+  if (detail.value?.firstResponseAt) {
+    return { label: $t('page.ticket.responseStatusType.responded'), type: 'success' as UI.ThemeColor };
+  }
+
+  return { label: $t('page.ticket.responseStatusType.unresponded'), type: 'warning' as UI.ThemeColor };
+});
+
+/** resolve_overdue takes precedence (it's only ever 1 while resolved_at is still null) */
+const resolveStatus = computed(() => {
+  if (detail.value?.resolveOverdue === 1) {
+    return { label: $t('page.ticket.resolveStatusType.overdue'), type: 'danger' as UI.ThemeColor };
+  }
+
+  if (detail.value?.resolvedAt) {
+    return { label: $t('page.ticket.resolveStatusType.resolved'), type: 'success' as UI.ThemeColor };
+  }
+
+  return { label: $t('page.ticket.resolveStatusType.unresolved'), type: 'warning' as UI.ThemeColor };
+});
+
 const isAdmin = computed(() => authStore.userInfo.roles.includes('admin'));
 
 const canEdit = computed(
@@ -187,6 +213,34 @@ async function handleDelete() {
           </template>
         </ElPopconfirm>
       </ElSpace>
+    </ElCard>
+
+    <ElCard v-if="detail" class="card-wrapper">
+      <template #header>{{ $t('page.ticket.slaInfo') }}</template>
+      <ElDescriptions :column="2" border>
+        <ElDescriptionsItem :label="$t('page.ticket.priority')">
+          {{ priorityLabel[detail.priority] }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.faultType')">
+          {{ faultTypeLabel[detail.faultType] }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.slaResponseDeadline')">
+          {{ detail.slaResponseDeadline ?? '-' }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.slaResolveDeadline')">
+          {{ detail.slaResolveDeadline ?? '-' }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.firstResponseAt')">
+          {{ detail.firstResponseAt ?? '-' }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.resolvedAt')">{{ detail.resolvedAt ?? '-' }}</ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.responseStatus')">
+          <ElTag :type="responseStatus.type">{{ responseStatus.label }}</ElTag>
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.resolveStatus')">
+          <ElTag :type="resolveStatus.type">{{ resolveStatus.label }}</ElTag>
+        </ElDescriptionsItem>
+      </ElDescriptions>
     </ElCard>
 
     <ElCard v-if="detail" class="card-wrapper">

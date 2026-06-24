@@ -197,6 +197,7 @@ const local: App.I18n.Schema = {
     manage_role: 'Role Manage',
     manage_menu: 'Menu Manage',
     'manage_operation-log': 'Operation Logs',
+    'manage_sla-rule': 'SLA Rules',
     ticket: 'Ticket Manage',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
@@ -526,6 +527,30 @@ const local: App.I18n.Schema = {
           success: 'Success',
           fail: 'Fail'
         }
+      },
+      slaRule: {
+        title: 'SLA Rule List',
+        name: 'Rule Name',
+        ticketCategory: 'Ticket Type',
+        allCategories: 'All',
+        priority: 'Priority',
+        responseMinutes: 'Response Time',
+        resolveMinutes: 'Resolve Time',
+        minutes: 'min',
+        sortOrder: 'Sort Order',
+        addRule: 'Add SLA Rule',
+        editRule: 'Edit SLA Rule',
+        form: {
+          name: 'Please enter rule name',
+          ticketCategory: 'Leave empty for a generic rule',
+          priority: 'Please select priority',
+          responseMinutesInvalid: 'Response time must be greater than 0',
+          resolveMinutesInvalid: 'Resolve time must be greater than 0',
+          resolveMinutesTooSmall: 'Resolve time must be greater than or equal to response time'
+        },
+        priorityType: {
+          medium: 'Medium'
+        }
       }
     },
     assetManage: {
@@ -681,6 +706,29 @@ const local: App.I18n.Schema = {
       },
       cancelForm: {
         reason: 'Cancellation Reason'
+      },
+      slaInfo: 'SLA Information',
+      slaResponseDeadline: 'Response Deadline',
+      slaResolveDeadline: 'Resolve Deadline',
+      firstResponseAt: 'First Response At',
+      resolvedAt: 'Resolved At',
+      slaStatus: 'SLA Status',
+      slaStatusType: {
+        normal: 'Normal',
+        responseOverdue: 'Response Overdue',
+        resolveOverdue: 'Resolve Overdue'
+      },
+      responseStatus: 'Response Status',
+      resolveStatus: 'Resolve Status',
+      responseStatusType: {
+        responded: 'Responded',
+        unresponded: 'Not Responded',
+        overdue: 'Response Overdue'
+      },
+      resolveStatusType: {
+        resolved: 'Resolved',
+        unresolved: 'Unresolved',
+        overdue: 'Resolve Overdue'
       }
     },
     faq: {
