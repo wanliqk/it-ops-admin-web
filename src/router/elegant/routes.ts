@@ -449,6 +449,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
+    name: 'notification',
+    path: '/notification',
+    component: 'layout.base$view.notification',
+    meta: {
+      title: 'notification',
+      i18nKey: 'route.notification',
+      icon: 'mdi:bell-outline',
+      order: 5
+    }
+  },
+  {
     name: 'plugin',
     path: '/plugin',
     component: 'layout.base',

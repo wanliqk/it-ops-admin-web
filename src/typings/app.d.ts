@@ -886,6 +886,37 @@ declare namespace App {
             other: string;
           };
         };
+        notification: {
+          title: string;
+          keyword: string;
+          notificationTitle: string;
+          content: string;
+          bizType: string;
+          bizId: string;
+          readStatus: string;
+          readAt: string;
+          detail: string;
+          markRead: string;
+          batchMarkRead: string;
+          readAll: string;
+          goToBusiness: string;
+          pleaseSelect: string;
+          form: {
+            keyword: string;
+            readStatus: string;
+            bizType: string;
+          };
+          readStatusType: {
+            unread: string;
+            read: string;
+          };
+          bizTypeType: {
+            ticket: string;
+            asset: string;
+            sla: string;
+            system: string;
+          };
+        };
       };
       form: {
         required: string;
@@ -908,6 +939,7 @@ declare namespace App {
         expand: string;
         pin: string;
         unpin: string;
+        notification: string;
       };
       datatable: {
         itemCount: string;

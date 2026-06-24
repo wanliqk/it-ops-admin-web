@@ -69,6 +69,7 @@ declare module "@elegant-router/types" {
     "multi-menu_second": "/multi-menu/second";
     "multi-menu_second_child": "/multi-menu/second/child";
     "multi-menu_second_child_home": "/multi-menu/second/child/home";
+    "notification": "/notification";
     "plugin": "/plugin";
     "plugin_barcode": "/plugin/barcode";
     "plugin_charts": "/plugin/charts";
@@ -154,6 +155,7 @@ declare module "@elegant-router/types" {
     | "login"
     | "manage"
     | "multi-menu"
+    | "notification"
     | "plugin"
     | "ticket"
     | "ticket-detail"
@@ -205,6 +207,7 @@ declare module "@elegant-router/types" {
     | "manage_user"
     | "multi-menu_first_child"
     | "multi-menu_second_child_home"
+    | "notification"
     | "plugin_barcode"
     | "plugin_charts_antv"
     | "plugin_charts_echarts"

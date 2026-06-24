@@ -200,6 +200,7 @@ const local: App.I18n.Schema = {
     ticket: '工单管理',
     'ticket-detail': '工单详情',
     faq: '常见问题',
+    notification: '通知中心',
     'asset-manage': '资产管理',
     'asset-manage_asset': '资产清单',
     'asset-manage_asset-category': '资产分类',
@@ -707,6 +708,37 @@ const local: App.I18n.Schema = {
         account: '账号系统问题',
         other: '其他问题'
       }
+    },
+    notification: {
+      title: '通知中心',
+      keyword: '关键字',
+      notificationTitle: '通知标题',
+      content: '通知内容',
+      bizType: '业务类型',
+      bizId: '业务ID',
+      readStatus: '阅读状态',
+      readAt: '阅读时间',
+      detail: '通知详情',
+      markRead: '标记已读',
+      batchMarkRead: '批量标记已读',
+      readAll: '全部标记已读',
+      goToBusiness: '前往查看',
+      pleaseSelect: '请先选择数据',
+      form: {
+        keyword: '请输入标题或内容关键字',
+        readStatus: '请选择阅读状态',
+        bizType: '请选择业务类型'
+      },
+      readStatusType: {
+        unread: '未读',
+        read: '已读'
+      },
+      bizTypeType: {
+        ticket: '工单通知',
+        asset: '资产通知',
+        sla: 'SLA提醒',
+        system: '系统通知'
+      }
     }
   },
   form: {
@@ -753,7 +785,8 @@ const local: App.I18n.Schema = {
     collapse: '折叠菜单',
     expand: '展开菜单',
     pin: '固定',
-    unpin: '取消固定'
+    unpin: '取消固定',
+    notification: '通知中心'
   },
   datatable: {
     itemCount: '共 {total} 条'

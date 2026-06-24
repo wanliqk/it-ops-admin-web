@@ -200,6 +200,7 @@ const local: App.I18n.Schema = {
     ticket: 'Ticket Manage',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
+    notification: 'Notification Center',
     'asset-manage': 'Asset Manage',
     'asset-manage_asset': 'Asset List',
     'asset-manage_asset-category': 'Asset Category',
@@ -707,6 +708,37 @@ const local: App.I18n.Schema = {
         account: 'Account',
         other: 'Other'
       }
+    },
+    notification: {
+      title: 'Notification Center',
+      keyword: 'Keyword',
+      notificationTitle: 'Title',
+      content: 'Content',
+      bizType: 'Business Type',
+      bizId: 'Business ID',
+      readStatus: 'Read Status',
+      readAt: 'Read At',
+      detail: 'Notification Detail',
+      markRead: 'Mark as Read',
+      batchMarkRead: 'Batch Mark as Read',
+      readAll: 'Mark All as Read',
+      goToBusiness: 'Go to',
+      pleaseSelect: 'Please select at least one item',
+      form: {
+        keyword: 'Please enter title or content keyword',
+        readStatus: 'Please select read status',
+        bizType: 'Please select business type'
+      },
+      readStatusType: {
+        unread: 'Unread',
+        read: 'Read'
+      },
+      bizTypeType: {
+        ticket: 'Ticket Notification',
+        asset: 'Asset Notification',
+        sla: 'SLA Alert',
+        system: 'System Notification'
+      }
     }
   },
   form: {
@@ -753,7 +785,8 @@ const local: App.I18n.Schema = {
     collapse: 'Collapse Menu',
     expand: 'Expand Menu',
     pin: 'Pin',
-    unpin: 'Unpin'
+    unpin: 'Unpin',
+    notification: 'Notification Center'
   },
   datatable: {
     itemCount: 'Total {total} items'
