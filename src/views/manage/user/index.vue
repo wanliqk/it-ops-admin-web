@@ -1,6 +1,12 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
-import { fetchDeleteUser, fetchGetAdminUserList, fetchResetUserPassword, fetchUpdateUserStatus } from '@/service/api';
+import {
+  fetchBatchDeleteUsers,
+  fetchDeleteUser,
+  fetchGetAdminUserList,
+  fetchResetUserPassword,
+  fetchUpdateUserStatus
+} from '@/service/api';
 import { defaultTransform, useTableOperate, useUIPaginatedTable } from '@/hooks/common/table';
 import { $t } from '@/locales';
 import UserOperateDrawer from './modules/user-operate-drawer.vue';
@@ -121,15 +127,28 @@ const {
   handleAdd,
   handleEdit,
   checkedRowKeys,
-  onBatchDeleted,
   onDeleted
   // closeDrawer
 } = useTableOperate(data, 'id', getData);
 
 async function handleBatchDelete() {
-  await Promise.all(checkedRowKeys.value.map(id => fetchDeleteUser(Number(id))));
+  const ids = checkedRowKeys.value.map(Number);
+  const { data: result, error } = await fetchBatchDeleteUsers(ids);
 
-  onBatchDeleted();
+  if (error || !result) return;
+
+  checkedRowKeys.value = [];
+  await getData();
+
+  if (result.failedItems.length === 0) {
+    window.$message?.success($t('common.deleteSuccess'));
+    return;
+  }
+
+  const reasons = result.failedItems.map(item => `#${item.id} ${item.reason}`).join('；');
+  window.$message?.warning(
+    `${$t('page.manage.user.batchDeleteResult', { success: result.deletedCount, fail: result.failedItems.length })}：${reasons}`
+  );
 }
 
 async function handleDelete(id: number) {
@@ -138,6 +157,10 @@ async function handleDelete(id: number) {
   if (!error) {
     onDeleted();
   }
+}
+
+function handleSelectionChange(rows: Api.Admin.User[]) {
+  checkedRowKeys.value = rows.map(row => String(row.id));
 }
 
 async function handleToggleStatus(row: Api.Admin.User) {
@@ -192,7 +215,7 @@ function edit(id: number) {
           class="sm:h-full"
           :data="data"
           row-key="id"
-          @selection-change="checkedRowKeys = $event"
+          @selection-change="handleSelectionChange"
         >
           <ElTableColumn v-for="col in columns" :key="col.prop" v-bind="col" />
         </ElTable>

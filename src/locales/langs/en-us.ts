@@ -431,6 +431,7 @@ const local: App.I18n.Schema = {
         addUser: 'Add User',
         editUser: 'Edit User',
         resetPassword: 'Reset Password',
+        batchDeleteResult: 'Batch delete completed: {success} succeeded, {fail} failed',
         gender: {
           male: 'Male',
           female: 'Female'

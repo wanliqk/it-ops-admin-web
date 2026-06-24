@@ -86,6 +86,10 @@ async function handleBatchDelete() {
   onBatchDeleted();
 }
 
+function handleSelectionChange(rows: Api.Admin.Role[]) {
+  checkedRowKeys.value = rows.map(row => String(row.id));
+}
+
 async function handleDelete(id: number) {
   const { error } = await fetchDeleteRole(id);
 
@@ -128,7 +132,7 @@ function edit(id: number) {
           class="sm:h-full"
           :data="data"
           row-key="id"
-          @selection-change="checkedRowKeys = $event"
+          @selection-change="handleSelectionChange"
         >
           <ElTableColumn v-for="col in columns" :key="col.prop" v-bind="col" />
         </ElTable>

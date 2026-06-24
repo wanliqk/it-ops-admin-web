@@ -29,6 +29,11 @@ declare namespace Api {
 
     type UserList = Common.PaginatingQueryRecord<User>;
 
+    interface BatchDeleteResult {
+      deletedCount: number;
+      failedItems: { id: number; reason: string }[];
+    }
+
     interface Role {
       id: number;
       roleName: string;

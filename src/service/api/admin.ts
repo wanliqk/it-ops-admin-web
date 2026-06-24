@@ -160,6 +160,27 @@ export function fetchDeleteUser(userId: number) {
   });
 }
 
+/** batch delete users */
+export async function fetchBatchDeleteUsers(ids: number[]) {
+  const result = await request<{ deleted_count: number; failed_items: { id: number; reason: string }[] }>({
+    url: '/users/batch-delete',
+    method: 'post',
+    data: { ids }
+  });
+
+  if (result.error || !result.data) {
+    return { ...result, data: null };
+  }
+
+  return {
+    ...result,
+    data: {
+      deletedCount: result.data.deleted_count,
+      failedItems: result.data.failed_items
+    } satisfies Api.Admin.BatchDeleteResult
+  };
+}
+
 /** backend shape of a role record, see admin-api-v1.md 16.1 */
 interface AdminRoleRecord {
   id: number;

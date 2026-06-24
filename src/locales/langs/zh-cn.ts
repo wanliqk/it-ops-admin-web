@@ -1,6 +1,6 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Soybean 管理系统',
+    title: 'ITObs 管理系统',
     updateTitle: '系统版本更新通知',
     updateContent: '检测到系统有新版本发布，是否立即刷新页面？',
     updateConfirm: '立即刷新',
@@ -431,6 +431,7 @@ const local: App.I18n.Schema = {
         addUser: '新增用户',
         editUser: '编辑用户',
         resetPassword: '重置密码',
+        batchDeleteResult: '批量删除完成，成功 {success} 个，失败 {fail} 个',
         gender: {
           male: '男',
           female: '女'

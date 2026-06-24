@@ -609,6 +609,7 @@ declare namespace App {
             addUser: string;
             editUser: string;
             resetPassword: string;
+            batchDeleteResult: string;
             gender: {
               male: string;
               female: string;
