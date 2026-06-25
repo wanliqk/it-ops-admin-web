@@ -734,6 +734,51 @@ declare namespace App {
               medium: string;
             };
           };
+          workGroup: {
+            title: string;
+            keyword: string;
+            groupName: string;
+            groupCode: string;
+            leader: string;
+            memberCount: string;
+            sortOrder: string;
+            updateTime: string;
+            addGroup: string;
+            editGroup: string;
+            description: string;
+            memberManage: string;
+            confirmDelete: string;
+            form: {
+              keyword: string;
+              groupName: string;
+              groupCode: string;
+              groupCodeInvalid: string;
+              leader: string;
+            };
+            member: {
+              title: string;
+              listTitle: string;
+              keyword: string;
+              username: string;
+              realName: string;
+              phone: string;
+              memberRole: string;
+              joinedAt: string;
+              addMember: string;
+              editMember: string;
+              remove: string;
+              confirmRemove: string;
+              user: string;
+              roleType: {
+                leader: string;
+                member: string;
+              };
+              form: {
+                keyword: string;
+                user: string;
+              };
+            };
+          };
         };
         assetManage: {
           assetCategory: {

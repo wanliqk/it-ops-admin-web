@@ -198,6 +198,7 @@ const local: App.I18n.Schema = {
     manage_menu: 'Menu Manage',
     'manage_operation-log': 'Operation Logs',
     'manage_sla-rule': 'SLA Rules',
+    'manage_work-group': 'Work Group Management',
     ticket: 'Ticket Manage',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
@@ -559,6 +560,51 @@ const local: App.I18n.Schema = {
         },
         priorityType: {
           medium: 'Medium'
+        }
+      },
+      workGroup: {
+        title: 'Work Group List',
+        keyword: 'Keyword',
+        groupName: 'Group Name',
+        groupCode: 'Group Code',
+        leader: 'Leader',
+        memberCount: 'Member Count',
+        sortOrder: 'Sort Order',
+        updateTime: 'Updated At',
+        addGroup: 'Add Work Group',
+        editGroup: 'Edit Work Group',
+        description: 'Description',
+        memberManage: 'Members',
+        confirmDelete: 'Are you sure you want to delete this work group? Its members will also be disabled.',
+        form: {
+          keyword: 'Please enter group name or code',
+          groupName: 'Please enter group name',
+          groupCode: 'Please enter group code',
+          groupCodeInvalid: 'Letters, numbers, underscores and hyphens only',
+          leader: 'Please select a leader, remote search supported'
+        },
+        member: {
+          title: 'Work Group Members - {groupName}',
+          listTitle: 'Member List',
+          keyword: 'Keyword',
+          username: 'Username',
+          realName: 'Real Name',
+          phone: 'Phone',
+          memberRole: 'Role',
+          joinedAt: 'Joined At',
+          addMember: 'Add Member',
+          editMember: 'Edit Member',
+          remove: 'Remove',
+          confirmRemove: 'Are you sure you want to remove this member from the work group?',
+          user: 'User',
+          roleType: {
+            leader: 'Leader',
+            member: 'Member'
+          },
+          form: {
+            keyword: 'Please enter username, real name or phone',
+            user: 'Please select a user, remote search supported'
+          }
         }
       }
     },

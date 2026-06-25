@@ -12,3 +12,4 @@ export * from './faq';
 export * from './notification';
 export * from './sla';
 export * from './todo';
+export * from './work-group';

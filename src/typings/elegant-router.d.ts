@@ -64,6 +64,7 @@ declare module "@elegant-router/types" {
     "manage_sla-rule": "/manage/sla-rule";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
+    "manage_work-group": "/manage/work-group";
     "multi-menu": "/multi-menu";
     "multi-menu_first": "/multi-menu/first";
     "multi-menu_first_child": "/multi-menu/first/child";
@@ -211,6 +212,7 @@ declare module "@elegant-router/types" {
     | "manage_sla-rule"
     | "manage_user-detail"
     | "manage_user"
+    | "manage_work-group"
     | "multi-menu_first_child"
     | "multi-menu_second_child_home"
     | "notification"

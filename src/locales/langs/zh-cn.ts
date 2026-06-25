@@ -198,6 +198,7 @@ const local: App.I18n.Schema = {
     manage_menu: '菜单管理',
     'manage_operation-log': '操作日志',
     'manage_sla-rule': 'SLA规则管理',
+    'manage_work-group': '运维组管理',
     ticket: '工单管理',
     'ticket-detail': '工单详情',
     faq: '常见问题',
@@ -559,6 +560,51 @@ const local: App.I18n.Schema = {
         },
         priorityType: {
           medium: '普通'
+        }
+      },
+      workGroup: {
+        title: '运维组列表',
+        keyword: '关键字',
+        groupName: '运维组名称',
+        groupCode: '运维组编码',
+        leader: '组长',
+        memberCount: '成员数量',
+        sortOrder: '排序',
+        updateTime: '更新时间',
+        addGroup: '新增运维组',
+        editGroup: '编辑运维组',
+        description: '运维组说明',
+        memberManage: '成员管理',
+        confirmDelete: '确认删除该运维组吗？删除后该组成员也会被禁用。',
+        form: {
+          keyword: '请输入运维组名称或编码',
+          groupName: '请输入运维组名称',
+          groupCode: '请输入运维组编码',
+          groupCodeInvalid: '只能包含英文、数字、下划线、中划线',
+          leader: '请选择组长，可远程搜索'
+        },
+        member: {
+          title: '运维组成员 - {groupName}',
+          listTitle: '成员列表',
+          keyword: '关键字',
+          username: '用户名',
+          realName: '姓名',
+          phone: '手机号',
+          memberRole: '组内角色',
+          joinedAt: '加入时间',
+          addMember: '添加成员',
+          editMember: '编辑成员',
+          remove: '移除',
+          confirmRemove: '确认将该成员从当前运维组移除吗？',
+          user: '用户',
+          roleType: {
+            leader: '组长',
+            member: '成员'
+          },
+          form: {
+            keyword: '请输入用户名、姓名或手机号',
+            user: '请选择用户，可远程搜索'
+          }
         }
       }
     },

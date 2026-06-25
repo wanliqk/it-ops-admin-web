@@ -395,6 +395,18 @@ export const generatedRoutes: GeneratedRoute[] = [
           roles: ['admin'],
           activeMenu: 'manage_user'
         }
+      },
+      {
+        name: 'manage_work-group',
+        path: '/manage/work-group',
+        component: 'view.manage_work-group',
+        meta: {
+          title: 'manage_work-group',
+          i18nKey: 'route.manage_work-group',
+          icon: 'mdi:account-group-outline',
+          order: 6,
+          roles: ['admin']
+        }
       }
     ]
   },
@@ -754,17 +766,6 @@ export const generatedRoutes: GeneratedRoute[] = [
     },
     children: [
       {
-        name: 'todo_my-todo',
-        path: '/todo/my-todo',
-        component: 'view.todo_my-todo',
-        meta: {
-          title: 'todo_my-todo',
-          i18nKey: 'route.todo_my-todo',
-          icon: 'mdi:account-check-outline',
-          order: 1
-        }
-      },
-      {
         name: 'todo_manage',
         path: '/todo/manage',
         component: 'view.todo_manage',
@@ -774,6 +775,17 @@ export const generatedRoutes: GeneratedRoute[] = [
           icon: 'mdi:format-list-bulleted',
           order: 2,
           roles: ['admin']
+        }
+      },
+      {
+        name: 'todo_my-todo',
+        path: '/todo/my-todo',
+        component: 'view.todo_my-todo',
+        meta: {
+          title: 'todo_my-todo',
+          i18nKey: 'route.todo_my-todo',
+          icon: 'mdi:account-check-outline',
+          order: 1
         }
       }
     ]

@@ -210,6 +210,7 @@ const routeMap: RouteMap = {
   "manage_sla-rule": "/manage/sla-rule",
   "manage_user": "/manage/user",
   "manage_user-detail": "/manage/user-detail/:id",
+  "manage_work-group": "/manage/work-group",
   "multi-menu": "/multi-menu",
   "multi-menu_first": "/multi-menu/first",
   "multi-menu_first_child": "/multi-menu/first/child",
