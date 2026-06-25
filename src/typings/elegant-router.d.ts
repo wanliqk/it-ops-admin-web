@@ -62,6 +62,7 @@ declare module "@elegant-router/types" {
     "manage_operation-log": "/manage/operation-log";
     "manage_role": "/manage/role";
     "manage_sla-rule": "/manage/sla-rule";
+    "manage_ticket-assignment-rule": "/manage/ticket-assignment-rule";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
     "manage_work-group": "/manage/work-group";
@@ -210,6 +211,7 @@ declare module "@elegant-router/types" {
     | "manage_operation-log"
     | "manage_role"
     | "manage_sla-rule"
+    | "manage_ticket-assignment-rule"
     | "manage_user-detail"
     | "manage_user"
     | "manage_work-group"

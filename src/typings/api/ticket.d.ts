@@ -5,23 +5,51 @@ declare namespace Api {
    * repair tickets, admin-api-v1.md 9, 10
    */
   namespace Ticket {
-    type TicketStatus = 'pending' | 'assigned' | 'processing' | 'completed' | 'cancelled';
+    /**
+     * admin-api-v1.md 3.3 — `pending`/old single-stage flow kept only for backward compatibility with
+     * pre-existing data; new tickets are created as `pending_accept`.
+     */
+    type TicketStatus =
+      | 'pending_accept'
+      | 'pending'
+      | 'assigned'
+      | 'processing'
+      | 'pending_confirm'
+      | 'completed'
+      | 'closed'
+      | 'cancelled';
 
     type TicketPriority = 'low' | 'normal' | 'high' | 'urgent';
 
     type FaultType = 'hardware' | 'software' | 'network' | 'printer' | 'account' | 'other';
+
+    /** admin-api-v1.md 3.11 — how a ticket ended up with its current handler */
+    type AssignType = 'manual' | 'auto' | 'claim';
 
     interface Ticket {
       id: number;
       ticketNo: string;
       title: string;
       faultType: FaultType;
+      /**
+       * ticket category for auto-assignment rule matching, admin-api-v1.md 9.2/21 — reuses the asset
+       * category table (`it_asset_category` / `/asset-categories`), there is no separate "ticket category"
+       * endpoint. Resolve the display name client-side from the asset category list.
+       */
+      categoryId: number | null;
       priority: TicketPriority;
       status: TicketStatus;
       reporterId: number;
       reporterName: string;
       handlerId: number | null;
       handlerName: string | null;
+      /** kept in sync with handlerId/handlerName by the backend; used for the assignment-info display */
+      assigneeId: number | null;
+      assigneeName: string | null;
+      assignType: AssignType | null;
+      assignerId: number | null;
+      assignerName: string | null;
+      assignedAt: string | null;
       assetId: number | null;
       assetNo: string | null;
       assetName: string | null;
@@ -73,7 +101,7 @@ declare namespace Api {
     interface TicketDetail extends Ticket {
       description: string;
       result: string | null;
-      assignedAt: string | null;
+      acceptedAt: string | null;
       startedAt: string | null;
     }
   }

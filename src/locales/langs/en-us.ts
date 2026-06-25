@@ -199,6 +199,7 @@ const local: App.I18n.Schema = {
     'manage_operation-log': 'Operation Logs',
     'manage_sla-rule': 'SLA Rules',
     'manage_work-group': 'Work Group Management',
+    'manage_ticket-assignment-rule': 'Auto-assignment Rules',
     ticket: 'Ticket Manage',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
@@ -606,6 +607,33 @@ const local: App.I18n.Schema = {
             user: 'Please select a user, remote search supported'
           }
         }
+      },
+      assignmentRule: {
+        title: 'Auto-assignment Rule List',
+        name: 'Rule Name',
+        opsGroup: 'Ops Group',
+        targetUser: 'Fixed Handler',
+        assignStrategy: 'Assign Strategy',
+        sortOrder: 'Sort Order',
+        remark: 'Remark',
+        updateTime: 'Updated At',
+        addRule: 'Add Rule',
+        editRule: 'Edit Rule',
+        anyCategory: 'Any Category',
+        anyPriority: 'Any Priority',
+        confirmDisable: 'Are you sure you want to disable this rule?',
+        leastWorkloadHint: 'The system will pick the member in this group with the fewest open tickets.',
+        fixedUserHint: 'Matched tickets will always be assigned to the specified handler.',
+        form: {
+          name: 'Please enter rule name',
+          category: 'Leave empty for any category',
+          priority: 'Leave empty for any priority',
+          opsGroup: 'Please select an ops group',
+          opsGroupOptional: 'Leave empty to not restrict by ops group',
+          opsGroupRequired: 'An ops group is required for the least-workload strategy',
+          targetUser: 'Please select a fixed handler',
+          targetUserRequired: 'A fixed handler is required for the fixed-user strategy'
+        }
       }
     },
     assetManage: {
@@ -695,6 +723,7 @@ const local: App.I18n.Schema = {
       ticketTitle: 'Title',
       description: 'Description',
       faultType: 'Fault Type',
+      category: 'Category',
       priority: 'Priority',
       status: 'Status',
       reporter: 'Reporter',
@@ -712,10 +741,13 @@ const local: App.I18n.Schema = {
         relatedAsset: 'Please select related asset (optional)'
       },
       statusType: {
-        pending: 'Pending',
+        pendingAccept: 'Pending Acceptance',
+        pending: 'Pending Assignment',
         assigned: 'Assigned',
         processing: 'Processing',
+        pendingConfirm: 'Pending User Confirmation',
         completed: 'Completed',
+        closed: 'Closed',
         cancelled: 'Cancelled'
       },
       priorityType: {
@@ -784,7 +816,33 @@ const local: App.I18n.Schema = {
         resolved: 'Resolved',
         unresolved: 'Unresolved',
         overdue: 'Resolve Overdue'
-      }
+      },
+      assignmentInfo: 'Assignment Info',
+      assignee: 'Current Handler',
+      assignType: 'Assign Type',
+      assignedAt: 'Assigned At',
+      acceptedAt: 'Accepted At',
+      noAssignee: 'No handler yet',
+      assignedNotStarted: 'Ticket assigned, waiting for the assignee to start processing.',
+      pendingAcceptHint: 'No handler yet. An IT staff member can claim it, or an admin can assign it manually.',
+      assignStrategyType: {
+        leastWorkload: 'Least Workload',
+        fixedUser: 'Fixed User'
+      },
+      assignTypeType: {
+        manual: 'Manually Assigned',
+        auto: 'Auto-assigned',
+        claim: 'Self-claimed',
+        unassigned: 'Unassigned'
+      },
+      autoAssign: 'Auto-assign',
+      reAutoAssign: 'Re-auto-assign',
+      confirmReAutoAssign:
+        'This ticket already has a handler. Force re-auto-assignment? This may change the current handler.',
+      autoAssignSuccess: 'Auto-assignment succeeded, assigned to: ',
+      autoAssignFail: 'Auto-assignment failed: ',
+      addSuccessAssigned: 'Ticket created successfully, automatically assigned to: ',
+      addSuccessPendingAccept: 'Ticket created successfully, no handler yet, pending acceptance'
     },
     faq: {
       title: 'FAQ List',

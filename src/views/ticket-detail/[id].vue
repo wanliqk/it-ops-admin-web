@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, shallowRef } from 'vue';
-import { fetchDeleteTicket, fetchGetTicketDetail, fetchGetTicketRecords, fetchStartTicket } from '@/service/api';
+import { getAssignTypeLabel } from '@/constants/ticket-assignment';
+import {
+  fetchAutoAssignTicket,
+  fetchDeleteTicket,
+  fetchGetAssetCategoryList,
+  fetchGetTicketDetail,
+  fetchGetTicketRecords,
+  fetchStartTicket
+} from '@/service/api';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouterPush } from '@/hooks/common/router';
 import { useAuth } from '@/hooks/business/auth';
@@ -27,6 +35,7 @@ const ticketId = computed(() => Number(props.id));
 const detail = shallowRef<Api.Ticket.TicketDetail | null>(null);
 const records = shallowRef<Api.Ticket.TicketRecord[]>([]);
 const loading = ref(false);
+const categoryLabel = ref<Record<number, string>>({});
 
 async function loadDetail() {
   loading.value = true;
@@ -45,23 +54,47 @@ async function loadDetail() {
   }
 }
 
-onMounted(loadDetail);
+async function loadCategoryOptions() {
+  const { data, error } = await fetchGetAssetCategoryList();
+
+  if (!error) {
+    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.categoryName]));
+  }
+}
+
+onMounted(() => {
+  loadDetail();
+  loadCategoryOptions();
+});
 
 const statusLabel: Record<Api.Ticket.TicketStatus, string> = {
+  pending_accept: $t('page.ticket.statusType.pendingAccept'),
   pending: $t('page.ticket.statusType.pending'),
   assigned: $t('page.ticket.statusType.assigned'),
   processing: $t('page.ticket.statusType.processing'),
+  pending_confirm: $t('page.ticket.statusType.pendingConfirm'),
   completed: $t('page.ticket.statusType.completed'),
+  closed: $t('page.ticket.statusType.closed'),
   cancelled: $t('page.ticket.statusType.cancelled')
 };
 
 const statusTagType: Record<Api.Ticket.TicketStatus, UI.ThemeColor> = {
+  pending_accept: 'info',
   pending: 'info',
   assigned: 'primary',
   processing: 'warning',
+  pending_confirm: 'warning',
   completed: 'success',
+  closed: 'success',
   cancelled: 'danger'
 };
+
+const assignTypeLabel = getAssignTypeLabel();
+
+const categoryName = computed(() => {
+  if (!detail.value || detail.value.categoryId === null) return '-';
+  return categoryLabel.value[detail.value.categoryId] ?? '-';
+});
 
 const priorityLabel: Record<Api.Ticket.TicketPriority, string> = {
   low: $t('page.ticket.priorityType.low'),
@@ -115,18 +148,28 @@ const resolveStatus = computed(() => {
 
 const isAdmin = computed(() => authStore.userInfo.roles.includes('admin'));
 
+const isPendingStatus = (status?: Api.Ticket.TicketStatus) => status === 'pending_accept' || status === 'pending';
+
 const canEdit = computed(
-  () => Boolean(detail.value) && hasAuth('ticket:update') && (detail.value!.status === 'pending' || isAdmin.value)
+  () => Boolean(detail.value) && hasAuth('ticket:update') && (isPendingStatus(detail.value!.status) || isAdmin.value)
 );
 
-const canAssign = computed(() => detail.value?.status === 'pending' && hasAuth('ticket:assign'));
+const canAssign = computed(() => isPendingStatus(detail.value?.status) && hasAuth('ticket:assign'));
 const canStart = computed(() => detail.value?.status === 'assigned' && hasAuth('ticket:start'));
 const canComplete = computed(() => detail.value?.status === 'processing' && hasAuth('ticket:complete'));
 const canCancel = computed(
-  () => (detail.value?.status === 'pending' || detail.value?.status === 'assigned') && hasAuth('ticket:cancel')
+  () => (isPendingStatus(detail.value?.status) || detail.value?.status === 'assigned') && hasAuth('ticket:cancel')
 );
 const canDelete = computed(
-  () => (detail.value?.status === 'pending' || detail.value?.status === 'cancelled') && hasAuth('ticket:delete')
+  () => (isPendingStatus(detail.value?.status) || detail.value?.status === 'cancelled') && hasAuth('ticket:delete')
+);
+const canAutoAssign = computed(
+  () =>
+    Boolean(detail.value) &&
+    hasAuth('ticket:auto-assign') &&
+    detail.value!.status !== 'completed' &&
+    detail.value!.status !== 'closed' &&
+    detail.value!.status !== 'cancelled'
 );
 
 const assignVisible = shallowRef(false);
@@ -143,6 +186,22 @@ async function handleStart() {
     window.$message?.success($t('common.modifySuccess'));
     await loadDetail();
   }
+}
+
+async function handleAutoAssign(force: boolean) {
+  if (!detail.value) return;
+
+  const { data, error } = await fetchAutoAssignTicket(detail.value.id, force);
+
+  if (error || !data) return;
+
+  if (data.success) {
+    window.$message?.success(`${$t('page.ticket.autoAssignSuccess')}${data.assigneeName ?? ''}`);
+  } else {
+    window.$message?.warning(`${$t('page.ticket.autoAssignFail')}${data.failReason ?? ''}`);
+  }
+
+  await loadDetail();
 }
 
 async function handleDelete() {
@@ -174,6 +233,7 @@ async function handleDelete() {
         <ElDescriptionsItem :label="$t('page.ticket.faultType')">
           {{ faultTypeLabel[detail.faultType] }}
         </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.category')">{{ categoryName }}</ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('page.ticket.priority')">
           {{ priorityLabel[detail.priority] }}
         </ElDescriptionsItem>
@@ -207,12 +267,58 @@ async function handleDelete() {
         <ElButton v-if="canCancel" type="warning" @click="cancelVisible = true">
           {{ $t('page.ticket.action.cancel') }}
         </ElButton>
+        <ElButton v-if="canAutoAssign && !detail.assigneeId" type="success" @click="handleAutoAssign(false)">
+          {{ $t('page.ticket.autoAssign') }}
+        </ElButton>
+        <ElPopconfirm
+          v-if="canAutoAssign && detail.assigneeId"
+          :title="$t('page.ticket.confirmReAutoAssign')"
+          @confirm="handleAutoAssign(true)"
+        >
+          <template #reference>
+            <ElButton type="warning">{{ $t('page.ticket.reAutoAssign') }}</ElButton>
+          </template>
+        </ElPopconfirm>
         <ElPopconfirm v-if="canDelete" :title="$t('common.confirmDelete')" @confirm="handleDelete">
           <template #reference>
             <ElButton type="danger">{{ $t('common.delete') }}</ElButton>
           </template>
         </ElPopconfirm>
       </ElSpace>
+    </ElCard>
+
+    <ElCard v-if="detail" class="card-wrapper">
+      <template #header>{{ $t('page.ticket.assignmentInfo') }}</template>
+      <ElDescriptions :column="2" border>
+        <ElDescriptionsItem :label="$t('page.ticket.assignee')">
+          {{ detail.assigneeName ?? $t('page.ticket.noAssignee') }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.assignType')">
+          {{ detail.assignType ? assignTypeLabel[detail.assignType] : $t('page.ticket.assignTypeType.unassigned') }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.assignedAt')">{{ detail.assignedAt ?? '-' }}</ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.acceptedAt')">{{ detail.acceptedAt ?? '-' }}</ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.status')">
+          <ElTag :type="statusTagType[detail.status]">{{ statusLabel[detail.status] }}</ElTag>
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.slaResponseDeadline')">
+          {{ detail.slaResponseDeadline ?? '-' }}
+        </ElDescriptionsItem>
+      </ElDescriptions>
+      <ElAlert
+        v-if="detail.status === 'assigned' && !detail.acceptedAt"
+        class="mt-12px"
+        type="info"
+        :closable="false"
+        :title="$t('page.ticket.assignedNotStarted')"
+      />
+      <ElAlert
+        v-if="detail.status === 'pending_accept'"
+        class="mt-12px"
+        type="warning"
+        :closable="false"
+        :title="$t('page.ticket.pendingAcceptHint')"
+      />
     </ElCard>
 
     <ElCard v-if="detail" class="card-wrapper">

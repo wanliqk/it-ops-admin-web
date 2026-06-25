@@ -14,10 +14,13 @@ const emit = defineEmits<Emits>();
 const model = defineModel<Api.Ticket.TicketSearchParams>('model', { required: true });
 
 const statusOptions = computed<CommonType.Option<Api.Ticket.TicketStatus>[]>(() => [
+  { label: $t('page.ticket.statusType.pendingAccept'), value: 'pending_accept' },
   { label: $t('page.ticket.statusType.pending'), value: 'pending' },
   { label: $t('page.ticket.statusType.assigned'), value: 'assigned' },
   { label: $t('page.ticket.statusType.processing'), value: 'processing' },
+  { label: $t('page.ticket.statusType.pendingConfirm'), value: 'pending_confirm' },
   { label: $t('page.ticket.statusType.completed'), value: 'completed' },
+  { label: $t('page.ticket.statusType.closed'), value: 'closed' },
   { label: $t('page.ticket.statusType.cancelled'), value: 'cancelled' }
 ]);
 

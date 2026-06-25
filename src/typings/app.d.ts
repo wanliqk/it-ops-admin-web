@@ -779,6 +779,33 @@ declare namespace App {
               };
             };
           };
+          assignmentRule: {
+            title: string;
+            name: string;
+            opsGroup: string;
+            targetUser: string;
+            assignStrategy: string;
+            sortOrder: string;
+            remark: string;
+            updateTime: string;
+            addRule: string;
+            editRule: string;
+            anyCategory: string;
+            anyPriority: string;
+            confirmDisable: string;
+            leastWorkloadHint: string;
+            fixedUserHint: string;
+            form: {
+              name: string;
+              category: string;
+              priority: string;
+              opsGroup: string;
+              opsGroupOptional: string;
+              opsGroupRequired: string;
+              targetUser: string;
+              targetUserRequired: string;
+            };
+          };
         };
         assetManage: {
           assetCategory: {
@@ -867,6 +894,7 @@ declare namespace App {
           ticketTitle: string;
           description: string;
           faultType: string;
+          category: string;
           priority: string;
           status: string;
           reporter: string;
@@ -884,10 +912,13 @@ declare namespace App {
             relatedAsset: string;
           };
           statusType: {
+            pendingAccept: string;
             pending: string;
             assigned: string;
             processing: string;
+            pendingConfirm: string;
             completed: string;
+            closed: string;
             cancelled: string;
           };
           priorityType: {
@@ -957,6 +988,31 @@ declare namespace App {
             unresolved: string;
             overdue: string;
           };
+          assignmentInfo: string;
+          assignee: string;
+          assignType: string;
+          assignedAt: string;
+          acceptedAt: string;
+          noAssignee: string;
+          assignedNotStarted: string;
+          pendingAcceptHint: string;
+          assignStrategyType: {
+            leastWorkload: string;
+            fixedUser: string;
+          };
+          assignTypeType: {
+            manual: string;
+            auto: string;
+            claim: string;
+            unassigned: string;
+          };
+          autoAssign: string;
+          reAutoAssign: string;
+          confirmReAutoAssign: string;
+          autoAssignSuccess: string;
+          autoAssignFail: string;
+          addSuccessAssigned: string;
+          addSuccessPendingAccept: string;
         };
         faq: {
           title: string;

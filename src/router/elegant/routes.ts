@@ -372,6 +372,18 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_ticket-assignment-rule',
+        path: '/manage/ticket-assignment-rule',
+        component: 'view.manage_ticket-assignment-rule',
+        meta: {
+          title: 'manage_ticket-assignment-rule',
+          i18nKey: 'route.manage_ticket-assignment-rule',
+          icon: 'mdi:account-arrow-right-outline',
+          order: 7,
+          roles: ['admin']
+        }
+      },
+      {
         name: 'manage_user',
         path: '/manage/user',
         component: 'view.manage_user',

@@ -1,8 +1,10 @@
 <script setup lang="tsx">
-import { ref, shallowRef } from 'vue';
-import { fetchDeleteTicket, fetchGetTicketList } from '@/service/api';
+import { onMounted, ref, shallowRef } from 'vue';
+import { getAssignTypeLabel } from '@/constants/ticket-assignment';
+import { fetchAutoAssignTicket, fetchDeleteTicket, fetchGetAssetCategoryList, fetchGetTicketList } from '@/service/api';
 import { defaultTransform, useUIPaginatedTable } from '@/hooks/common/table';
 import { useRouterPush } from '@/hooks/common/router';
+import { useAuth } from '@/hooks/business/auth';
 import { $t } from '@/locales';
 import TicketCreateDrawer from './modules/ticket-create-drawer.vue';
 import TicketSearch from './modules/ticket-search.vue';
@@ -10,22 +12,49 @@ import TicketSearch from './modules/ticket-search.vue';
 defineOptions({ name: 'TicketManage' });
 
 const { routerPushByKey } = useRouterPush();
+const { hasAuth } = useAuth();
 
 const statusLabel: Record<Api.Ticket.TicketStatus, string> = {
+  pending_accept: $t('page.ticket.statusType.pendingAccept'),
   pending: $t('page.ticket.statusType.pending'),
   assigned: $t('page.ticket.statusType.assigned'),
   processing: $t('page.ticket.statusType.processing'),
+  pending_confirm: $t('page.ticket.statusType.pendingConfirm'),
   completed: $t('page.ticket.statusType.completed'),
+  closed: $t('page.ticket.statusType.closed'),
   cancelled: $t('page.ticket.statusType.cancelled')
 };
 
 const statusTagType: Record<Api.Ticket.TicketStatus, UI.ThemeColor> = {
+  pending_accept: 'info',
   pending: 'info',
   assigned: 'primary',
   processing: 'warning',
+  pending_confirm: 'warning',
   completed: 'success',
+  closed: 'success',
   cancelled: 'danger'
 };
+
+const assignTypeLabel = getAssignTypeLabel();
+
+/** ticket categories reuse the asset-category table — there is no separate "ticket category" endpoint */
+const categoryLabel = ref<Record<number, string>>({});
+
+async function loadCategoryOptions() {
+  const { data, error } = await fetchGetAssetCategoryList();
+
+  if (!error) {
+    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.categoryName]));
+  }
+}
+
+onMounted(loadCategoryOptions);
+
+/** completed/closed/cancelled tickets are terminal — no auto-assign action makes sense there */
+function isAutoAssignable(status: Api.Ticket.TicketStatus): boolean {
+  return status !== 'completed' && status !== 'closed' && status !== 'cancelled';
+}
 
 const priorityLabel: Record<Api.Ticket.TicketPriority, string> = {
   low: $t('page.ticket.priorityType.low'),
@@ -98,8 +127,26 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
       width: 100,
       formatter: row => <ElTag type={statusTagType[row.status]}>{statusLabel[row.status]}</ElTag>
     },
+    {
+      prop: 'categoryId',
+      label: $t('page.ticket.category'),
+      width: 110,
+      formatter: row => (row.categoryId === null ? '-' : (categoryLabel.value[row.categoryId] ?? '-'))
+    },
     { prop: 'reporterName', label: $t('page.ticket.reporter'), width: 100 },
-    { prop: 'handlerName', label: $t('page.ticket.handler'), width: 100 },
+    {
+      prop: 'assigneeName',
+      label: $t('page.ticket.assignee'),
+      width: 100,
+      formatter: row => row.assigneeName ?? $t('page.ticket.noAssignee')
+    },
+    {
+      prop: 'assignType',
+      label: $t('page.ticket.assignType'),
+      width: 130,
+      formatter: row => (row.assignType ? assignTypeLabel[row.assignType] : $t('page.ticket.assignTypeType.unassigned'))
+    },
+    { prop: 'assignedAt', label: $t('page.ticket.assignedAt'), width: 160, formatter: row => row.assignedAt ?? '-' },
     { prop: 'createTime', label: $t('common.createTime'), width: 160 },
     {
       prop: 'slaResponseDeadline',
@@ -139,13 +186,35 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
       prop: 'operate',
       label: $t('common.operate'),
       align: 'center',
-      width: 160,
+      width: 240,
       formatter: row => (
         <div class="flex-center gap-8px">
           <ElButton type="primary" plain size="small" onClick={() => viewDetail(row.id)}>
             {$t('common.detail')}
           </ElButton>
-          {(row.status === 'pending' || row.status === 'cancelled') && (
+          {hasAuth('ticket:auto-assign') && isAutoAssignable(row.status) && (
+            <>
+              {row.assigneeId === null ? (
+                <ElButton type="success" plain size="small" onClick={() => handleAutoAssign(row.id, false)}>
+                  {$t('page.ticket.autoAssign')}
+                </ElButton>
+              ) : (
+                <ElPopconfirm
+                  title={$t('page.ticket.confirmReAutoAssign')}
+                  onConfirm={() => handleAutoAssign(row.id, true)}
+                >
+                  {{
+                    reference: () => (
+                      <ElButton type="warning" plain size="small">
+                        {$t('page.ticket.reAutoAssign')}
+                      </ElButton>
+                    )
+                  }}
+                </ElPopconfirm>
+              )}
+            </>
+          )}
+          {(row.status === 'pending_accept' || row.status === 'pending' || row.status === 'cancelled') && (
             <ElPopconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(row.id)}>
               {{
                 reference: () => (
@@ -179,6 +248,20 @@ async function handleDelete(id: number) {
     window.$message?.success($t('common.deleteSuccess'));
     await getData();
   }
+}
+
+async function handleAutoAssign(id: number, force: boolean) {
+  const { data: result, error } = await fetchAutoAssignTicket(id, force);
+
+  if (error || !result) return;
+
+  if (result.success) {
+    window.$message?.success(`${$t('page.ticket.autoAssignSuccess')}${result.assigneeName ?? ''}`);
+  } else {
+    window.$message?.warning(`${$t('page.ticket.autoAssignFail')}${result.failReason ?? ''}`);
+  }
+
+  await getData();
 }
 
 function resetSearchParams() {

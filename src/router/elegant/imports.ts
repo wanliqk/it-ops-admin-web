@@ -41,6 +41,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   "manage_operation-log": () => import("@/views/manage/operation-log/index.vue"),
   manage_role: () => import("@/views/manage/role/index.vue"),
   "manage_sla-rule": () => import("@/views/manage/sla-rule/index.vue"),
+  "manage_ticket-assignment-rule": () => import("@/views/manage/ticket-assignment-rule/index.vue"),
   "manage_user-detail": () => import("@/views/manage/user-detail/[id].vue"),
   manage_user: () => import("@/views/manage/user/index.vue"),
   "manage_work-group": () => import("@/views/manage/work-group/index.vue"),

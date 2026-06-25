@@ -80,7 +80,7 @@ async function handleSubmit() {
 
   if (!model.value.faultType) return;
 
-  const { error } = await fetchCreateTicket({
+  const { data, error } = await fetchCreateTicket({
     title: model.value.title,
     description: model.value.description,
     faultType: model.value.faultType,
@@ -90,7 +90,12 @@ async function handleSubmit() {
 
   if (error) return;
 
-  window.$message?.success($t('common.addSuccess'));
+  if (data?.assigneeName) {
+    window.$message?.success(`${$t('page.ticket.addSuccessAssigned')}${data.assigneeName}`);
+  } else {
+    window.$message?.success($t('page.ticket.addSuccessPendingAccept'));
+  }
+
   closeDrawer();
   emit('submitted');
 }

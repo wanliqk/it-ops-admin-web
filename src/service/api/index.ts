@@ -6,6 +6,7 @@ export * from './rbac';
 export * from './admin';
 export * from './asset';
 export * from './ticket';
+export * from './ticket-assignment';
 export * from './repair-record';
 export * from './operation-log';
 export * from './faq';

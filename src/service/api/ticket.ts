@@ -1,17 +1,24 @@
 import { request } from '../request';
 
-/** backend shape of a ticket list row, see admin-api-v1.md 9.1 */
+/** backend shape of a ticket list row, see admin-api-v1.md 9.1 (now also returned by 9.2/9.3 in full) */
 interface TicketRecordItem {
   id: number;
   ticket_no: string;
   title: string;
   fault_type: Api.Ticket.FaultType;
+  category_id: number | null;
   priority: Api.Ticket.TicketPriority;
   status: Api.Ticket.TicketStatus;
   reporter_id: number;
   reporter_name: string;
   handler_id: number | null;
   handler_name: string | null;
+  assignee_id: number | null;
+  assignee_name: string | null;
+  assign_type: Api.Ticket.AssignType | null;
+  assigner_id: number | null;
+  assigner_name: string | null;
+  assigned_at: string | null;
   asset_id: number | null;
   asset_no: string | null;
   asset_name: string | null;
@@ -31,12 +38,19 @@ function toTicket(record: TicketRecordItem): Api.Ticket.Ticket {
     ticketNo: record.ticket_no,
     title: record.title,
     faultType: record.fault_type,
+    categoryId: record.category_id,
     priority: record.priority,
     status: record.status,
     reporterId: record.reporter_id,
     reporterName: record.reporter_name,
     handlerId: record.handler_id,
     handlerName: record.handler_name,
+    assigneeId: record.assignee_id,
+    assigneeName: record.assignee_name,
+    assignType: record.assign_type,
+    assignerId: record.assigner_id,
+    assignerName: record.assigner_name,
+    assignedAt: record.assigned_at,
     assetId: record.asset_id,
     assetNo: record.asset_no,
     assetName: record.asset_name,
@@ -99,9 +113,35 @@ interface CreateTicketParams {
   assetId?: number | null;
 }
 
+/**
+ * backend shape of ticket detail.
+ *
+ * Note: the running backend returns the same flat shape as a list row (`TicketRecordItem`) plus
+ * `description`/`result`/`accepted_at`/`started_at` — verified directly against `GET /tickets/{id}`, which
+ * does NOT match admin-api-v1.md 9.3's documented nested `reporter`/`handler`/`asset`/`records` example.
+ * `POST /tickets` now returns this same full shape too (verified live), not the old minimal
+ * `{id, ticket_no, status}` — needed so the create-drawer can show the real auto-assignment result.
+ */
+interface TicketDetailRecord extends TicketRecordItem {
+  description: string;
+  result: string | null;
+  accepted_at: string | null;
+  started_at: string | null;
+}
+
+function toTicketDetail(record: TicketDetailRecord): Api.Ticket.TicketDetail {
+  return {
+    ...toTicket(record),
+    description: record.description,
+    result: record.result,
+    acceptedAt: record.accepted_at,
+    startedAt: record.started_at
+  };
+}
+
 /** create ticket */
-export function fetchCreateTicket(params: CreateTicketParams) {
-  return request<{ id: number; ticket_no: string; status: Api.Ticket.TicketStatus }>({
+export async function fetchCreateTicket(params: CreateTicketParams) {
+  const result = await request<TicketDetailRecord>({
     url: '/tickets',
     method: 'post',
     data: {
@@ -112,20 +152,12 @@ export function fetchCreateTicket(params: CreateTicketParams) {
       asset_id: params.assetId
     }
   });
-}
 
-/**
- * backend shape of ticket detail.
- *
- * Note: the running backend returns the same flat shape as a list row (`TicketRecordItem`) plus
- * `description`/`result`/`assigned_at`/`started_at` — verified directly against `GET /tickets/{id}`, which
- * does NOT match admin-api-v1.md 9.3's documented nested `reporter`/`handler`/`asset`/`records` example.
- */
-interface TicketDetailRecord extends TicketRecordItem {
-  description: string;
-  result: string | null;
-  assigned_at: string | null;
-  started_at: string | null;
+  if (result.error || !result.data) {
+    return { ...result, data: null };
+  }
+
+  return { ...result, data: toTicketDetail(result.data) };
 }
 
 /** get ticket detail */
@@ -139,15 +171,7 @@ export async function fetchGetTicketDetail(ticketId: number) {
     return result;
   }
 
-  const record = result.data;
-
-  const detail: Api.Ticket.TicketDetail = {
-    ...toTicket(record),
-    description: record.description,
-    result: record.result,
-    assignedAt: record.assigned_at,
-    startedAt: record.started_at
-  };
+  const detail: Api.Ticket.TicketDetail = toTicketDetail(result.data);
 
   return { ...result, data: detail };
 }
@@ -268,6 +292,49 @@ export function fetchCancelTicket(ticketId: number, reason: string) {
     method: 'patch',
     data: { reason }
   });
+}
+
+/** backend shape of an auto-assign attempt result, see admin-api-v1.md 21.6 */
+interface AutoAssignResultRecord {
+  success: boolean;
+  ticket_id: number;
+  assignee_id: number | null;
+  assignee_name: string | null;
+  rule_id: number | null;
+  assign_type: Api.Ticket.AssignType | null;
+  assign_strategy: Api.TicketAssignment.AssignStrategy | null;
+  fail_stage: string | null;
+  fail_reason: string | null;
+}
+
+/** manually (re-)trigger auto-assignment for a ticket; `force` allows reassigning a ticket that already has a handler */
+export async function fetchAutoAssignTicket(ticketId: number, force = false) {
+  const result = await request<AutoAssignResultRecord>({
+    url: `/tickets/${ticketId}/auto-assign`,
+    method: 'post',
+    params: { force: force || undefined }
+  });
+
+  if (result.error || !result.data) {
+    return { ...result, data: null };
+  }
+
+  const record = result.data;
+
+  return {
+    ...result,
+    data: {
+      success: record.success,
+      ticketId: record.ticket_id,
+      assigneeId: record.assignee_id,
+      assigneeName: record.assignee_name,
+      ruleId: record.rule_id,
+      assignType: record.assign_type,
+      assignStrategy: record.assign_strategy,
+      failStage: record.fail_stage,
+      failReason: record.fail_reason
+    } satisfies Api.TicketAssignment.AutoAssignResult
+  };
 }
 
 /** delete ticket */

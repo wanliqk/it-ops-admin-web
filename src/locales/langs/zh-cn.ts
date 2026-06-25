@@ -199,6 +199,7 @@ const local: App.I18n.Schema = {
     'manage_operation-log': '操作日志',
     'manage_sla-rule': 'SLA规则管理',
     'manage_work-group': '运维组管理',
+    'manage_ticket-assignment-rule': '自动分配规则',
     ticket: '工单管理',
     'ticket-detail': '工单详情',
     faq: '常见问题',
@@ -606,6 +607,33 @@ const local: App.I18n.Schema = {
             user: '请选择用户，可远程搜索'
           }
         }
+      },
+      assignmentRule: {
+        title: '自动分配规则列表',
+        name: '规则名称',
+        opsGroup: '运维组',
+        targetUser: '固定处理人',
+        assignStrategy: '分配策略',
+        sortOrder: '排序值',
+        remark: '备注',
+        updateTime: '更新时间',
+        addRule: '新增规则',
+        editRule: '编辑规则',
+        anyCategory: '不限分类',
+        anyPriority: '不限优先级',
+        confirmDisable: '确认停用该规则吗？',
+        leastWorkloadHint: '系统会从该运维组中选择当前未完成工单最少的成员。',
+        fixedUserHint: '系统会将命中的工单固定分配给指定运维人员。',
+        form: {
+          name: '请输入规则名称',
+          category: '不选表示不限分类',
+          priority: '不选表示不限优先级',
+          opsGroup: '请选择运维组',
+          opsGroupOptional: '不选表示不限制运维组',
+          opsGroupRequired: '最少工单分配策略必须选择运维组',
+          targetUser: '请选择固定处理人',
+          targetUserRequired: '固定人员分配策略必须选择固定处理人'
+        }
       }
     },
     assetManage: {
@@ -695,6 +723,7 @@ const local: App.I18n.Schema = {
       ticketTitle: '工单标题',
       description: '故障描述',
       faultType: '故障类型',
+      category: '工单分类',
       priority: '优先级',
       status: '工单状态',
       reporter: '报修人',
@@ -712,10 +741,13 @@ const local: App.I18n.Schema = {
         relatedAsset: '请选择关联资产（可不选）'
       },
       statusType: {
+        pendingAccept: '待受理',
         pending: '待分派',
         assigned: '已分派',
         processing: '处理中',
+        pendingConfirm: '待用户确认',
         completed: '已完成',
+        closed: '已关闭',
         cancelled: '已取消'
       },
       priorityType: {
@@ -784,7 +816,32 @@ const local: App.I18n.Schema = {
         resolved: '已完成',
         unresolved: '未完成',
         overdue: '处理超时'
-      }
+      },
+      assignmentInfo: '分配信息',
+      assignee: '当前处理人',
+      assignType: '分配方式',
+      assignedAt: '分配时间',
+      acceptedAt: '受理时间',
+      noAssignee: '暂无处理人',
+      assignedNotStarted: '工单已分配，等待运维人员开始处理。',
+      pendingAcceptHint: '当前工单暂无处理人，可由 IT 运维人员主动受理或管理员手动分派。',
+      assignStrategyType: {
+        leastWorkload: '最少工单分配',
+        fixedUser: '固定人员分配'
+      },
+      assignTypeType: {
+        manual: '管理员手动分派',
+        auto: '系统自动分配',
+        claim: '主动受理',
+        unassigned: '未分配'
+      },
+      autoAssign: '自动分配',
+      reAutoAssign: '重新自动分配',
+      confirmReAutoAssign: '当前工单已有处理人，是否强制重新自动分配？该操作可能会变更当前处理人。',
+      autoAssignSuccess: '自动分配成功，已分配给：',
+      autoAssignFail: '自动分配失败：',
+      addSuccessAssigned: '工单创建成功，系统已自动分配给：',
+      addSuccessPendingAccept: '工单创建成功，当前暂无处理人，已进入待受理状态'
     },
     faq: {
       title: 'FAQ 列表',
