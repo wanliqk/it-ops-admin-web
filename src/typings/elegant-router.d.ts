@@ -97,6 +97,9 @@ declare module "@elegant-router/types" {
     "plugin_video": "/plugin/video";
     "ticket": "/ticket";
     "ticket-detail": "/ticket-detail/:id";
+    "todo": "/todo";
+    "todo_manage": "/todo/manage";
+    "todo_my-todo": "/todo/my-todo";
     "user-center": "/user-center";
   };
 
@@ -160,6 +163,7 @@ declare module "@elegant-router/types" {
     | "plugin"
     | "ticket"
     | "ticket-detail"
+    | "todo"
     | "user-center"
   >;
 
@@ -231,6 +235,8 @@ declare module "@elegant-router/types" {
     | "plugin_video"
     | "ticket-detail"
     | "ticket"
+    | "todo_manage"
+    | "todo_my-todo"
     | "user-center"
   >;
 

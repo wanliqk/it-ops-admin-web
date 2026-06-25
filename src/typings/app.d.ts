@@ -492,6 +492,12 @@ declare namespace App {
           ticketTrend: string;
           ticketCount: string;
           faultTypeDistribution: string;
+          todoStatistics: string;
+          todoPendingCount: string;
+          todoProcessingCount: string;
+          todoExpiredCount: string;
+          todoTodayDeadlineCount: string;
+          todoUrgentCount: string;
           projectNews: {
             title: string;
             moreNews: string;
@@ -962,6 +968,70 @@ declare namespace App {
             asset: string;
             sla: string;
             system: string;
+          };
+        };
+        todo: {
+          todoNo: string;
+          todoTitle: string;
+          content: string;
+          todoType: string;
+          bizType: string;
+          bizId: string;
+          bizTitle: string;
+          bizStatus: string;
+          assignee: string;
+          status: string;
+          priority: string;
+          deadlineAt: string;
+          completedAt: string;
+          cancelledAt: string;
+          updateTime: string;
+          remark: string;
+          detail: string;
+          goProcess: string;
+          startProcessing: string;
+          cancel: string;
+          confirmCancel: string;
+          approvalNotImplemented: string;
+          statusType: {
+            pending: string;
+            processing: string;
+            completed: string;
+            cancelled: string;
+            expired: string;
+          };
+          priorityType: {
+            low: string;
+            normal: string;
+            high: string;
+            urgent: string;
+          };
+          bizTypeType: {
+            ticket: string;
+            asset: string;
+            approval: string;
+          };
+          todoTypeType: {
+            ticketAssign: string;
+            ticketAccept: string;
+            ticketProcess: string;
+            ticketConfirm: string;
+            assetApproval: string;
+            assetInventory: string;
+          };
+          myTodo: {
+            title: string;
+            keyword: string;
+            form: {
+              keyword: string;
+            };
+          };
+          manage: {
+            title: string;
+            assigneeId: string;
+            form: {
+              assignee: string;
+            };
           };
         };
       };

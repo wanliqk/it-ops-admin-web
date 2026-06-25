@@ -202,6 +202,9 @@ const local: App.I18n.Schema = {
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
     notification: 'Notification Center',
+    todo: 'Todo Center',
+    'todo_my-todo': 'My Todos',
+    todo_manage: 'Todo Management',
     'asset-manage': 'Asset Manage',
     'asset-manage_asset': 'Asset List',
     'asset-manage_asset-category': 'Asset Category',
@@ -316,6 +319,12 @@ const local: App.I18n.Schema = {
       ticketTrend: 'Ticket Trend (Last 7 Days)',
       ticketCount: 'Ticket Count',
       faultTypeDistribution: 'Ticket Fault Type Distribution',
+      todoStatistics: 'My Todo Statistics',
+      todoPendingCount: 'Pending',
+      todoProcessingCount: 'Processing',
+      todoExpiredCount: 'Expired',
+      todoTodayDeadlineCount: 'Due Today',
+      todoUrgentCount: 'Urgent',
       projectNews: {
         title: 'Project News',
         moreNews: 'More News',
@@ -786,6 +795,70 @@ const local: App.I18n.Schema = {
         asset: 'Asset Notification',
         sla: 'SLA Alert',
         system: 'System Notification'
+      }
+    },
+    todo: {
+      todoNo: 'Todo No.',
+      todoTitle: 'Todo Title',
+      content: 'Content',
+      todoType: 'Todo Type',
+      bizType: 'Business Type',
+      bizId: 'Business ID',
+      bizTitle: 'Related Business',
+      bizStatus: 'Business Status',
+      assignee: 'Assignee',
+      status: 'Status',
+      priority: 'Priority',
+      deadlineAt: 'Deadline',
+      completedAt: 'Completed At',
+      cancelledAt: 'Cancelled At',
+      updateTime: 'Updated At',
+      remark: 'Remark',
+      detail: 'Todo Detail',
+      goProcess: 'Process',
+      startProcessing: 'Start',
+      cancel: 'Cancel',
+      confirmCancel: 'Are you sure you want to cancel this todo?',
+      approvalNotImplemented: 'The approval detail page is not implemented yet',
+      statusType: {
+        pending: 'Pending',
+        processing: 'Processing',
+        completed: 'Completed',
+        cancelled: 'Cancelled',
+        expired: 'Expired'
+      },
+      priorityType: {
+        low: 'Low',
+        normal: 'Normal',
+        high: 'High',
+        urgent: 'Urgent'
+      },
+      bizTypeType: {
+        ticket: 'Ticket',
+        asset: 'Asset',
+        approval: 'Approval'
+      },
+      todoTypeType: {
+        ticketAssign: 'Pending Assignment',
+        ticketAccept: 'Pending Acceptance',
+        ticketProcess: 'Pending Processing',
+        ticketConfirm: 'Pending Confirmation',
+        assetApproval: 'Asset Approval',
+        assetInventory: 'Asset Inventory'
+      },
+      myTodo: {
+        title: 'My Todos',
+        keyword: 'Keyword',
+        form: {
+          keyword: 'Please enter title, content or related business keyword'
+        }
+      },
+      manage: {
+        title: 'Todo Management',
+        assigneeId: 'Assignee',
+        form: {
+          assignee: 'Please select assignee'
+        }
       }
     }
   },

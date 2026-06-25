@@ -202,6 +202,9 @@ const local: App.I18n.Schema = {
     'ticket-detail': '工单详情',
     faq: '常见问题',
     notification: '通知中心',
+    todo: '待办中心',
+    'todo_my-todo': '我的待办',
+    todo_manage: '待办管理',
     'asset-manage': '资产管理',
     'asset-manage_asset': '资产清单',
     'asset-manage_asset-category': '资产分类',
@@ -316,6 +319,12 @@ const local: App.I18n.Schema = {
       ticketTrend: '最近7天工单趋势',
       ticketCount: '工单数',
       faultTypeDistribution: '工单故障类型分布',
+      todoStatistics: '我的待办统计',
+      todoPendingCount: '待处理',
+      todoProcessingCount: '处理中',
+      todoExpiredCount: '已超时',
+      todoTodayDeadlineCount: '今日到期',
+      todoUrgentCount: '紧急待办',
       projectNews: {
         title: '项目动态',
         moreNews: '更多动态',
@@ -786,6 +795,70 @@ const local: App.I18n.Schema = {
         asset: '资产通知',
         sla: 'SLA提醒',
         system: '系统通知'
+      }
+    },
+    todo: {
+      todoNo: '待办编号',
+      todoTitle: '待办标题',
+      content: '待办内容',
+      todoType: '待办类型',
+      bizType: '业务类型',
+      bizId: '关联业务ID',
+      bizTitle: '关联业务',
+      bizStatus: '业务状态',
+      assignee: '处理人',
+      status: '状态',
+      priority: '优先级',
+      deadlineAt: '截止时间',
+      completedAt: '完成时间',
+      cancelledAt: '取消时间',
+      updateTime: '更新时间',
+      remark: '备注',
+      detail: '待办详情',
+      goProcess: '去处理',
+      startProcessing: '开始处理',
+      cancel: '取消',
+      confirmCancel: '确认取消该待办吗？',
+      approvalNotImplemented: '审批详情页面暂未实现',
+      statusType: {
+        pending: '待处理',
+        processing: '处理中',
+        completed: '已完成',
+        cancelled: '已取消',
+        expired: '已超时'
+      },
+      priorityType: {
+        low: '低',
+        normal: '普通',
+        high: '高',
+        urgent: '紧急'
+      },
+      bizTypeType: {
+        ticket: '工单',
+        asset: '资产',
+        approval: '审批'
+      },
+      todoTypeType: {
+        ticketAssign: '待派单',
+        ticketAccept: '待接单',
+        ticketProcess: '待处理工单',
+        ticketConfirm: '待确认工单',
+        assetApproval: '资产审批',
+        assetInventory: '资产盘点'
+      },
+      myTodo: {
+        title: '我的待办',
+        keyword: '关键字',
+        form: {
+          keyword: '请输入标题、内容或关联业务关键字'
+        }
+      },
+      manage: {
+        title: '待办管理',
+        assigneeId: '处理人',
+        form: {
+          assignee: '请选择处理人'
+        }
       }
     }
   },

@@ -243,6 +243,9 @@ const routeMap: RouteMap = {
   "plugin_video": "/plugin/video",
   "ticket": "/ticket",
   "ticket-detail": "/ticket-detail/:id",
+  "todo": "/todo",
+  "todo_manage": "/todo/manage",
+  "todo_my-todo": "/todo/my-todo",
   "user-center": "/user-center"
 };
 

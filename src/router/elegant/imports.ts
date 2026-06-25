@@ -67,5 +67,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   plugin_video: () => import("@/views/plugin/video/index.vue"),
   "ticket-detail": () => import("@/views/ticket-detail/[id].vue"),
   ticket: () => import("@/views/ticket/index.vue"),
+  todo_manage: () => import("@/views/todo/manage/index.vue"),
+  "todo_my-todo": () => import("@/views/todo/my-todo/index.vue"),
   "user-center": () => import("@/views/user-center/index.vue"),
 };

@@ -743,6 +743,42 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'todo',
+    path: '/todo',
+    component: 'layout.base',
+    meta: {
+      title: 'todo',
+      i18nKey: 'route.todo',
+      icon: 'mdi:format-list-checks',
+      order: 2
+    },
+    children: [
+      {
+        name: 'todo_my-todo',
+        path: '/todo/my-todo',
+        component: 'view.todo_my-todo',
+        meta: {
+          title: 'todo_my-todo',
+          i18nKey: 'route.todo_my-todo',
+          icon: 'mdi:account-check-outline',
+          order: 1
+        }
+      },
+      {
+        name: 'todo_manage',
+        path: '/todo/manage',
+        component: 'view.todo_manage',
+        meta: {
+          title: 'todo_manage',
+          i18nKey: 'route.todo_manage',
+          icon: 'mdi:format-list-bulleted',
+          order: 2,
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  {
     name: 'user-center',
     path: '/user-center',
     component: 'layout.base$view.user-center',
