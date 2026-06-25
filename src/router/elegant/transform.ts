@@ -209,6 +209,7 @@ const routeMap: RouteMap = {
   "manage_role": "/manage/role",
   "manage_sla-rule": "/manage/sla-rule",
   "manage_ticket-assignment-rule": "/manage/ticket-assignment-rule",
+  "manage_ticket-category": "/manage/ticket-category",
   "manage_user": "/manage/user",
   "manage_user-detail": "/manage/user-detail/:id",
   "manage_work-group": "/manage/work-group",

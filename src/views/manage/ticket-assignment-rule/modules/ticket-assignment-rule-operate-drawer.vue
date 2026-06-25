@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { getAssignStrategyOptions } from '@/constants/ticket-assignment';
+import { loadEnabledTicketCategoryOptions } from '@/constants/ticket-category';
 import {
   fetchCreateAssignmentRule,
-  fetchGetAssetCategoryList,
   fetchGetUserOptions,
   fetchGetWorkGroupList,
   fetchGetWorkGroupMemberList,
@@ -73,14 +73,12 @@ const opsGroupOptions = ref<CommonType.Option<number>[]>([]);
 const targetUserOptions = ref<CommonType.Option<number>[]>([]);
 
 async function loadStaticOptions() {
-  const [categoryRes, groupRes] = await Promise.all([
-    fetchGetAssetCategoryList(),
+  const [categoryOptionsResult, groupRes] = await Promise.all([
+    loadEnabledTicketCategoryOptions(),
     fetchGetWorkGroupList({ current: 1, size: 100, status: 1 })
   ]);
 
-  if (!categoryRes.error) {
-    categoryOptions.value = categoryRes.data.map(item => ({ label: item.categoryName, value: item.id }));
-  }
+  categoryOptions.value = categoryOptionsResult.map(({ label, value }) => ({ label, value }));
 
   if (!groupRes.error) {
     opsGroupOptions.value = groupRes.data.records.map(item => ({ label: item.groupName, value: item.id }));

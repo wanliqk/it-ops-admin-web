@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, shallowRef } from 'vue';
 import { getAssignStrategyOptions } from '@/constants/ticket-assignment';
-import { fetchGetAssetCategoryList, fetchGetUserOptions, fetchGetWorkGroupList } from '@/service/api';
+import { loadEnabledTicketCategoryOptions } from '@/constants/ticket-category';
+import { fetchGetUserOptions, fetchGetWorkGroupList } from '@/service/api';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'TicketAssignmentRuleSearch' });
@@ -34,16 +35,14 @@ const opsGroupOptions = shallowRef<CommonType.Option<number>[]>([]);
 const targetUserOptions = shallowRef<CommonType.Option<number>[]>([]);
 
 onMounted(async () => {
-  const [categoryRes, groupRes, itStaffRes, adminRes] = await Promise.all([
-    fetchGetAssetCategoryList(),
+  const [categoryOptionsResult, groupRes, itStaffRes, adminRes] = await Promise.all([
+    loadEnabledTicketCategoryOptions(),
     fetchGetWorkGroupList({ current: 1, size: 100, status: 1 }),
     fetchGetUserOptions('it_staff'),
     fetchGetUserOptions('admin')
   ]);
 
-  if (!categoryRes.error) {
-    categoryOptions.value = categoryRes.data.map(item => ({ label: item.categoryName, value: item.id }));
-  }
+  categoryOptions.value = categoryOptionsResult.map(({ label, value }) => ({ label, value }));
 
   if (!groupRes.error) {
     opsGroupOptions.value = groupRes.data.records.map(item => ({ label: item.groupName, value: item.id }));

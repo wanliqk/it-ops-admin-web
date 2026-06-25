@@ -1,6 +1,11 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
-import { fetchDeleteSlaRule, fetchSlaRuleList, fetchUpdateSlaRuleEnabled } from '@/service/api';
+import { onMounted, ref } from 'vue';
+import {
+  fetchDeleteSlaRule,
+  fetchGetTicketCategoryList,
+  fetchSlaRuleList,
+  fetchUpdateSlaRuleEnabled
+} from '@/service/api';
 import { defaultTransform, useTableOperate, useUIPaginatedTable } from '@/hooks/common/table';
 import { $t } from '@/locales';
 import SlaRuleOperateDrawer from './modules/sla-rule-operate-drawer.vue';
@@ -22,14 +27,18 @@ const priorityTagType: Record<Api.Sla.Priority, UI.ThemeColor> = {
   low: 'info'
 };
 
-const ticketCategoryLabel: Record<Api.Sla.TicketCategory, string> = {
-  hardware: $t('page.ticket.faultTypeType.hardware'),
-  software: $t('page.ticket.faultTypeType.software'),
-  network: $t('page.ticket.faultTypeType.network'),
-  printer: $t('page.ticket.faultTypeType.printer'),
-  account: $t('page.ticket.faultTypeType.account'),
-  other: $t('page.ticket.faultTypeType.other')
-};
+/** ticket categories aren't denormalized on the SLA rule list response, so resolve names client-side */
+const categoryLabel = ref<Record<number, string>>({});
+
+async function loadCategoryOptions() {
+  const { data, error } = await fetchGetTicketCategoryList();
+
+  if (!error) {
+    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.name]));
+  }
+}
+
+onMounted(loadCategoryOptions);
 
 const searchParams = ref(getInitSearchParams());
 
@@ -38,7 +47,7 @@ function getInitSearchParams(): Api.Sla.SlaRuleSearchParams {
     current: 1,
     size: 10,
     priority: undefined,
-    ticketCategory: undefined,
+    categoryId: undefined,
     enabled: undefined
   };
 }
@@ -57,11 +66,11 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
   columns: () => [
     { prop: 'name', label: $t('page.manage.slaRule.name'), minWidth: 160 },
     {
-      prop: 'ticketCategory',
-      label: $t('page.manage.slaRule.ticketCategory'),
+      prop: 'categoryId',
+      label: $t('page.ticket.category'),
       width: 110,
       formatter: row =>
-        row.ticketCategory ? ticketCategoryLabel[row.ticketCategory] : $t('page.manage.slaRule.allCategories')
+        row.categoryId === null ? $t('page.manage.slaRule.allCategories') : (categoryLabel.value[row.categoryId] ?? '-')
     },
     {
       prop: 'priority',

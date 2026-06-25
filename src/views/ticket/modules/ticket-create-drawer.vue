@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { loadEnabledTicketCategoryOptions } from '@/constants/ticket-category';
+import type { TicketCategoryOption } from '@/constants/ticket-category';
 import { fetchCreateTicket, fetchGetAssetList } from '@/service/api';
 import { useForm, useFormRules } from '@/hooks/common/form';
 import { $t } from '@/locales';
@@ -22,7 +24,7 @@ const { defaultRequiredRule } = useFormRules();
 interface Model {
   title: string;
   description: string;
-  faultType: Api.Ticket.FaultType | undefined;
+  categoryId: number | undefined;
   priority: Api.Ticket.TicketPriority;
   assetId: number | null;
 }
@@ -33,26 +35,40 @@ function createDefaultModel(): Model {
   return {
     title: '',
     description: '',
-    faultType: undefined,
+    categoryId: undefined,
     priority: 'normal',
     assetId: null
   };
 }
 
-const rules: Record<'title' | 'description' | 'faultType', App.Global.FormRule> = {
+const categoryOptions = ref<TicketCategoryOption[]>([]);
+
+const selectedCategory = computed(
+  () => categoryOptions.value.find(option => option.value === model.value.categoryId)?.category
+);
+
+const requireAsset = computed(() => selectedCategory.value?.requireAsset === 1);
+
+async function loadCategoryOptions() {
+  categoryOptions.value = await loadEnabledTicketCategoryOptions();
+}
+
+function handleCategoryChange() {
+  if (selectedCategory.value?.defaultPriority) {
+    model.value.priority = selectedCategory.value.defaultPriority;
+  }
+}
+
+const rules = computed<Record<'title' | 'description' | 'categoryId' | 'assetId', App.Global.FormRule>>(() => ({
   title: defaultRequiredRule,
   description: defaultRequiredRule,
-  faultType: defaultRequiredRule
-};
-
-const faultTypeOptions = computed<CommonType.Option<Api.Ticket.FaultType>[]>(() => [
-  { label: $t('page.ticket.faultTypeType.hardware'), value: 'hardware' },
-  { label: $t('page.ticket.faultTypeType.software'), value: 'software' },
-  { label: $t('page.ticket.faultTypeType.network'), value: 'network' },
-  { label: $t('page.ticket.faultTypeType.printer'), value: 'printer' },
-  { label: $t('page.ticket.faultTypeType.account'), value: 'account' },
-  { label: $t('page.ticket.faultTypeType.other'), value: 'other' }
-]);
+  categoryId: defaultRequiredRule,
+  assetId: {
+    required: requireAsset.value,
+    message: $t('page.ticket.form.relatedAssetRequired'),
+    trigger: 'change'
+  }
+}));
 
 const priorityOptions = computed<CommonType.Option<Api.Ticket.TicketPriority>[]>(() => [
   { label: $t('page.ticket.priorityType.low'), value: 'low' },
@@ -78,12 +94,12 @@ function closeDrawer() {
 async function handleSubmit() {
   await validate();
 
-  if (!model.value.faultType) return;
+  if (!model.value.categoryId) return;
 
   const { data, error } = await fetchCreateTicket({
     title: model.value.title,
     description: model.value.description,
-    faultType: model.value.faultType,
+    categoryId: model.value.categoryId,
     priority: model.value.priority,
     assetId: model.value.assetId
   });
@@ -104,6 +120,7 @@ watch(visible, val => {
   if (val) {
     model.value = createDefaultModel();
     restoreValidation();
+    loadCategoryOptions();
     loadAssetOptions();
   }
 });
@@ -123,9 +140,13 @@ watch(visible, val => {
           :placeholder="$t('page.ticket.form.description')"
         />
       </ElFormItem>
-      <ElFormItem :label="$t('page.ticket.faultType')" prop="faultType">
-        <ElSelect v-model="model.faultType" :placeholder="$t('page.ticket.form.faultType')">
-          <ElOption v-for="{ label, value } in faultTypeOptions" :key="value" :label="label" :value="value" />
+      <ElFormItem :label="$t('page.ticket.category')" prop="categoryId">
+        <ElSelect
+          v-model="model.categoryId"
+          :placeholder="$t('page.ticket.form.category')"
+          @change="handleCategoryChange"
+        >
+          <ElOption v-for="{ label, value } in categoryOptions" :key="value" :label="label" :value="value" />
         </ElSelect>
       </ElFormItem>
       <ElFormItem :label="$t('page.ticket.priority')" prop="priority">
@@ -134,7 +155,7 @@ watch(visible, val => {
         </ElSelect>
       </ElFormItem>
       <ElFormItem :label="$t('page.ticket.relatedAsset')" prop="assetId">
-        <ElSelect v-model="model.assetId" clearable :placeholder="$t('page.ticket.form.relatedAsset')">
+        <ElSelect v-model="model.assetId" :clearable="!requireAsset" :placeholder="$t('page.ticket.form.relatedAsset')">
           <ElOption v-for="{ label, value } in assetOptions" :key="value" :label="label" :value="value" />
         </ElSelect>
       </ElFormItem>

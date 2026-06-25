@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { loadEnabledTicketCategoryOptions } from '@/constants/ticket-category';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'SlaRuleSearch' });
@@ -20,14 +21,14 @@ const priorityOptions = computed<CommonType.Option<Api.Sla.Priority>[]>(() => [
   { label: $t('page.ticket.priorityType.low'), value: 'low' }
 ]);
 
-const ticketCategoryOptions = computed<CommonType.Option<Api.Sla.TicketCategory>[]>(() => [
-  { label: $t('page.ticket.faultTypeType.hardware'), value: 'hardware' },
-  { label: $t('page.ticket.faultTypeType.software'), value: 'software' },
-  { label: $t('page.ticket.faultTypeType.network'), value: 'network' },
-  { label: $t('page.ticket.faultTypeType.printer'), value: 'printer' },
-  { label: $t('page.ticket.faultTypeType.account'), value: 'account' },
-  { label: $t('page.ticket.faultTypeType.other'), value: 'other' }
-]);
+const categoryOptions = ref<CommonType.Option<number>[]>([]);
+
+async function loadCategoryOptions() {
+  const options = await loadEnabledTicketCategoryOptions();
+  categoryOptions.value = options.map(({ label, value }) => ({ label, value }));
+}
+
+loadCategoryOptions();
 
 const enabledOptions = computed<CommonType.Option<number>[]>(() => [
   { label: $t('page.manage.common.status.enable'), value: 1 },
@@ -57,14 +58,9 @@ function search() {
               </ElFormItem>
             </ElCol>
             <ElCol :lg="6" :md="8" :sm="12">
-              <ElFormItem :label="$t('page.manage.slaRule.ticketCategory')" prop="ticketCategory">
-                <ElSelect v-model="model.ticketCategory" clearable>
-                  <ElOption
-                    v-for="{ label, value } in ticketCategoryOptions"
-                    :key="value"
-                    :label="label"
-                    :value="value"
-                  />
+              <ElFormItem :label="$t('page.ticket.category')" prop="categoryId">
+                <ElSelect v-model="model.categoryId" clearable>
+                  <ElOption v-for="{ label, value } in categoryOptions" :key="value" :label="label" :value="value" />
                 </ElSelect>
               </ElFormItem>
             </ElCol>

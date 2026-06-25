@@ -200,6 +200,7 @@ const local: App.I18n.Schema = {
     'manage_sla-rule': 'SLA规则管理',
     'manage_work-group': '运维组管理',
     'manage_ticket-assignment-rule': '自动分配规则',
+    'manage_ticket-category': '工单分类',
     ticket: '工单管理',
     'ticket-detail': '工单详情',
     faq: '常见问题',
@@ -320,7 +321,7 @@ const local: App.I18n.Schema = {
       assetRepairing: '维修中资产',
       ticketTrend: '最近7天工单趋势',
       ticketCount: '工单数',
-      faultTypeDistribution: '工单故障类型分布',
+      ticketCategoryDistribution: '工单分类分布',
       todoStatistics: '我的待办统计',
       todoPendingCount: '待处理',
       todoProcessingCount: '处理中',
@@ -542,7 +543,6 @@ const local: App.I18n.Schema = {
       slaRule: {
         title: 'SLA 规则列表',
         name: '规则名称',
-        ticketCategory: '工单类型',
         allCategories: '通用',
         priority: '优先级',
         responseMinutes: '响应时限',
@@ -553,7 +553,7 @@ const local: App.I18n.Schema = {
         editRule: '编辑 SLA 规则',
         form: {
           name: '请输入规则名称',
-          ticketCategory: '不选表示通用规则',
+          category: '不选表示通用规则',
           priority: '请选择优先级',
           responseMinutesInvalid: '响应时限必须大于 0',
           resolveMinutesInvalid: '处理时限必须大于 0',
@@ -633,6 +633,29 @@ const local: App.I18n.Schema = {
           opsGroupRequired: '最少工单分配策略必须选择运维组',
           targetUser: '请选择固定处理人',
           targetUserRequired: '固定人员分配策略必须选择固定处理人'
+        }
+      },
+      ticketCategory: {
+        title: '工单分类列表',
+        keyword: '关键字',
+        parentCategory: '父级分类',
+        name: '分类名称',
+        code: '分类编码',
+        description: '分类说明',
+        defaultPriority: '默认优先级',
+        defaultGroup: '默认运维组',
+        requireAsset: '是否要求资产',
+        sortOrder: '排序值',
+        addCategory: '新增分类',
+        editCategory: '编辑分类',
+        confirmEnable: '确认启用该工单分类吗？',
+        confirmDisable: '确认停用该工单分类吗？停用后用户将不能选择该分类提交工单。',
+        confirmDelete: '确认删除该工单分类吗？如果已有工单使用该分类，后端将拒绝删除。',
+        form: {
+          keyword: '请输入分类名称或编码',
+          parentCategory: '不选表示顶级分类',
+          name: '请输入分类名称',
+          code: '请输入分类编码'
         }
       }
     },
@@ -722,7 +745,6 @@ const local: App.I18n.Schema = {
       ticketNo: '工单编号',
       ticketTitle: '工单标题',
       description: '故障描述',
-      faultType: '故障类型',
       category: '工单分类',
       priority: '优先级',
       status: '工单状态',
@@ -737,8 +759,9 @@ const local: App.I18n.Schema = {
         keyword: '请输入工单编号、标题或描述',
         title: '请输入工单标题',
         description: '请输入故障描述',
-        faultType: '请选择故障类型',
-        relatedAsset: '请选择关联资产（可不选）'
+        category: '请选择工单分类',
+        relatedAsset: '请选择关联资产（可不选）',
+        relatedAssetRequired: '该分类要求关联资产'
       },
       statusType: {
         pendingAccept: '待受理',
@@ -755,14 +778,6 @@ const local: App.I18n.Schema = {
         normal: '普通',
         high: '高',
         urgent: '紧急'
-      },
-      faultTypeType: {
-        hardware: '硬件故障',
-        software: '软件故障',
-        network: '网络故障',
-        printer: '打印机故障',
-        account: '账号权限问题',
-        other: '其他'
       },
       action: {
         assign: '分派',

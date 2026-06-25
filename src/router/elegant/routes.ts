@@ -384,6 +384,18 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_ticket-category',
+        path: '/manage/ticket-category',
+        component: 'view.manage_ticket-category',
+        meta: {
+          title: 'manage_ticket-category',
+          i18nKey: 'route.manage_ticket-category',
+          icon: 'mdi:shape-plus-outline',
+          order: 8,
+          roles: ['admin']
+        }
+      },
+      {
         name: 'manage_user',
         path: '/manage/user',
         component: 'view.manage_user',

@@ -21,8 +21,6 @@ declare namespace Api {
 
     type TicketPriority = 'low' | 'normal' | 'high' | 'urgent';
 
-    type FaultType = 'hardware' | 'software' | 'network' | 'printer' | 'account' | 'other';
-
     /** admin-api-v1.md 3.11 — how a ticket ended up with its current handler */
     type AssignType = 'manual' | 'auto' | 'claim';
 
@@ -30,13 +28,12 @@ declare namespace Api {
       id: number;
       ticketNo: string;
       title: string;
-      faultType: FaultType;
       /**
-       * ticket category for auto-assignment rule matching, admin-api-v1.md 9.2/21 — reuses the asset
-       * category table (`it_asset_category` / `/asset-categories`), there is no separate "ticket category"
-       * endpoint. Resolve the display name client-side from the asset category list.
+       * admin-api-v1.md 3.5/8.8 — replaces the old `fault_type` string enum. Points at the dedicated
+       * `it_ticket_category` table (`/ticket-categories`), NOT the asset category table.
        */
-      categoryId: number | null;
+      categoryId: number;
+      categoryName: string | null;
       priority: TicketPriority;
       status: TicketStatus;
       reporterId: number;
@@ -71,7 +68,7 @@ declare namespace Api {
         keyword?: string;
         status?: TicketStatus;
         priority?: TicketPriority;
-        faultType?: FaultType;
+        categoryId?: number;
         reporterId?: number;
         handlerId?: number;
         assetId?: number;

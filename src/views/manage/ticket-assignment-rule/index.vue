@@ -3,8 +3,8 @@ import { onMounted, ref } from 'vue';
 import { getAssignStrategyLabel } from '@/constants/ticket-assignment';
 import {
   fetchDeleteAssignmentRule,
-  fetchGetAssetCategoryList,
   fetchGetAssignmentRuleList,
+  fetchGetTicketCategoryList,
   fetchUpdateAssignmentRuleStatus
 } from '@/service/api';
 import { defaultTransform, useTableOperate, useUIPaginatedTable } from '@/hooks/common/table';
@@ -23,14 +23,14 @@ const priorityLabel: Record<Api.Ticket.TicketPriority, string> = {
 
 const assignStrategyLabel = getAssignStrategyLabel();
 
-/** ticket categories reuse the asset-category table — there is no separate "ticket category" endpoint */
+/** ticket categories aren't denormalized on the rule list response, so resolve names client-side */
 const categoryLabel = ref<Record<number, string>>({});
 
 async function loadCategoryOptions() {
-  const { data, error } = await fetchGetAssetCategoryList();
+  const { data, error } = await fetchGetTicketCategoryList();
 
   if (!error) {
-    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.categoryName]));
+    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.name]));
   }
 }
 

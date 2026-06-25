@@ -5,8 +5,8 @@ interface TicketRecordItem {
   id: number;
   ticket_no: string;
   title: string;
-  fault_type: Api.Ticket.FaultType;
-  category_id: number | null;
+  category_id: number;
+  category_name: string | null;
   priority: Api.Ticket.TicketPriority;
   status: Api.Ticket.TicketStatus;
   reporter_id: number;
@@ -37,8 +37,8 @@ function toTicket(record: TicketRecordItem): Api.Ticket.Ticket {
     id: record.id,
     ticketNo: record.ticket_no,
     title: record.title,
-    faultType: record.fault_type,
     categoryId: record.category_id,
+    categoryName: record.category_name,
     priority: record.priority,
     status: record.status,
     reporterId: record.reporter_id,
@@ -79,7 +79,7 @@ export async function fetchGetTicketList(params?: Api.Ticket.TicketSearchParams)
       keyword: params?.keyword,
       status: params?.status,
       priority: params?.priority,
-      fault_type: params?.faultType,
+      category_id: params?.categoryId,
       reporter_id: params?.reporterId,
       handler_id: params?.handlerId,
       asset_id: params?.assetId,
@@ -108,7 +108,7 @@ export async function fetchGetTicketList(params?: Api.Ticket.TicketSearchParams)
 interface CreateTicketParams {
   title: string;
   description: string;
-  faultType: Api.Ticket.FaultType;
+  categoryId: number;
   priority?: Api.Ticket.TicketPriority;
   assetId?: number | null;
 }
@@ -147,7 +147,7 @@ export async function fetchCreateTicket(params: CreateTicketParams) {
     data: {
       title: params.title,
       description: params.description,
-      fault_type: params.faultType,
+      category_id: params.categoryId,
       priority: params.priority,
       asset_id: params.assetId
     }
@@ -220,7 +220,7 @@ export async function fetchGetTicketRecords(ticketId: number) {
 interface UpdateTicketParams {
   title: string;
   description: string;
-  faultType: Api.Ticket.FaultType;
+  categoryId: number;
   priority: Api.Ticket.TicketPriority;
   assetId?: number | null;
 }
@@ -233,7 +233,7 @@ export function fetchUpdateTicket(ticketId: number, params: UpdateTicketParams) 
     data: {
       title: params.title,
       description: params.description,
-      fault_type: params.faultType,
+      category_id: params.categoryId,
       priority: params.priority,
       asset_id: params.assetId
     }

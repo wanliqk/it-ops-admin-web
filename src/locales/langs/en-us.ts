@@ -200,6 +200,7 @@ const local: App.I18n.Schema = {
     'manage_sla-rule': 'SLA Rules',
     'manage_work-group': 'Work Group Management',
     'manage_ticket-assignment-rule': 'Auto-assignment Rules',
+    'manage_ticket-category': 'Ticket Categories',
     ticket: 'Ticket Manage',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
@@ -320,7 +321,7 @@ const local: App.I18n.Schema = {
       assetRepairing: 'Assets In Repair',
       ticketTrend: 'Ticket Trend (Last 7 Days)',
       ticketCount: 'Ticket Count',
-      faultTypeDistribution: 'Ticket Fault Type Distribution',
+      ticketCategoryDistribution: 'Ticket Category Distribution',
       todoStatistics: 'My Todo Statistics',
       todoPendingCount: 'Pending',
       todoProcessingCount: 'Processing',
@@ -542,7 +543,6 @@ const local: App.I18n.Schema = {
       slaRule: {
         title: 'SLA Rule List',
         name: 'Rule Name',
-        ticketCategory: 'Ticket Type',
         allCategories: 'All',
         priority: 'Priority',
         responseMinutes: 'Response Time',
@@ -553,7 +553,7 @@ const local: App.I18n.Schema = {
         editRule: 'Edit SLA Rule',
         form: {
           name: 'Please enter rule name',
-          ticketCategory: 'Leave empty for a generic rule',
+          category: 'Leave empty for a generic rule',
           priority: 'Please select priority',
           responseMinutesInvalid: 'Response time must be greater than 0',
           resolveMinutesInvalid: 'Resolve time must be greater than 0',
@@ -633,6 +633,31 @@ const local: App.I18n.Schema = {
           opsGroupRequired: 'An ops group is required for the least-workload strategy',
           targetUser: 'Please select a fixed handler',
           targetUserRequired: 'A fixed handler is required for the fixed-user strategy'
+        }
+      },
+      ticketCategory: {
+        title: 'Ticket Category List',
+        keyword: 'Keyword',
+        parentCategory: 'Parent Category',
+        name: 'Category Name',
+        code: 'Category Code',
+        description: 'Description',
+        defaultPriority: 'Default Priority',
+        defaultGroup: 'Default Ops Group',
+        requireAsset: 'Requires Asset',
+        sortOrder: 'Sort Order',
+        addCategory: 'Add Category',
+        editCategory: 'Edit Category',
+        confirmEnable: 'Are you sure you want to enable this ticket category?',
+        confirmDisable:
+          'Are you sure you want to disable this ticket category? Users will no longer be able to select it.',
+        confirmDelete:
+          'Are you sure you want to delete this ticket category? The backend will reject it if tickets still use it.',
+        form: {
+          keyword: 'Please enter category name or code',
+          parentCategory: 'Leave empty for a top-level category',
+          name: 'Please enter category name',
+          code: 'Please enter category code'
         }
       }
     },
@@ -722,7 +747,6 @@ const local: App.I18n.Schema = {
       ticketNo: 'Ticket No.',
       ticketTitle: 'Title',
       description: 'Description',
-      faultType: 'Fault Type',
       category: 'Category',
       priority: 'Priority',
       status: 'Status',
@@ -737,8 +761,9 @@ const local: App.I18n.Schema = {
         keyword: 'Please enter ticket no., title or description',
         title: 'Please enter ticket title',
         description: 'Please describe the issue',
-        faultType: 'Please select fault type',
-        relatedAsset: 'Please select related asset (optional)'
+        category: 'Please select a ticket category',
+        relatedAsset: 'Please select related asset (optional)',
+        relatedAssetRequired: 'This category requires a related asset'
       },
       statusType: {
         pendingAccept: 'Pending Acceptance',
@@ -755,14 +780,6 @@ const local: App.I18n.Schema = {
         normal: 'Normal',
         high: 'High',
         urgent: 'Urgent'
-      },
-      faultTypeType: {
-        hardware: 'Hardware',
-        software: 'Software',
-        network: 'Network',
-        printer: 'Printer',
-        account: 'Account',
-        other: 'Other'
       },
       action: {
         assign: 'Assign',

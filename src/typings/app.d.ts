@@ -491,7 +491,7 @@ declare namespace App {
           assetRepairing: string;
           ticketTrend: string;
           ticketCount: string;
-          faultTypeDistribution: string;
+          ticketCategoryDistribution: string;
           todoStatistics: string;
           todoPendingCount: string;
           todoProcessingCount: string;
@@ -713,7 +713,6 @@ declare namespace App {
           slaRule: {
             title: string;
             name: string;
-            ticketCategory: string;
             allCategories: string;
             priority: string;
             responseMinutes: string;
@@ -724,7 +723,7 @@ declare namespace App {
             editRule: string;
             form: {
               name: string;
-              ticketCategory: string;
+              category: string;
               priority: string;
               responseMinutesInvalid: string;
               resolveMinutesInvalid: string;
@@ -804,6 +803,29 @@ declare namespace App {
               opsGroupRequired: string;
               targetUser: string;
               targetUserRequired: string;
+            };
+          };
+          ticketCategory: {
+            title: string;
+            keyword: string;
+            parentCategory: string;
+            name: string;
+            code: string;
+            description: string;
+            defaultPriority: string;
+            defaultGroup: string;
+            requireAsset: string;
+            sortOrder: string;
+            addCategory: string;
+            editCategory: string;
+            confirmEnable: string;
+            confirmDisable: string;
+            confirmDelete: string;
+            form: {
+              keyword: string;
+              parentCategory: string;
+              name: string;
+              code: string;
             };
           };
         };
@@ -893,7 +915,6 @@ declare namespace App {
           ticketNo: string;
           ticketTitle: string;
           description: string;
-          faultType: string;
           category: string;
           priority: string;
           status: string;
@@ -908,8 +929,9 @@ declare namespace App {
             keyword: string;
             title: string;
             description: string;
-            faultType: string;
+            category: string;
             relatedAsset: string;
+            relatedAssetRequired: string;
           };
           statusType: {
             pendingAccept: string;
@@ -926,14 +948,6 @@ declare namespace App {
             normal: string;
             high: string;
             urgent: string;
-          };
-          faultTypeType: {
-            hardware: string;
-            software: string;
-            network: string;
-            printer: string;
-            account: string;
-            other: string;
           };
           action: {
             assign: string;

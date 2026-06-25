@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { fetchTicketFaultTypes } from '@/service/api';
+import { fetchTicketCategoryStats } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
 import { useEcharts } from '@/hooks/common/echarts';
 import { $t } from '@/locales';
@@ -23,7 +23,7 @@ const { domRef, updateOptions } = useEcharts(() => ({
   series: [
     {
       color: ['#5da8ff', '#8e9dff', '#fedc69', '#26deca', '#ff9f7f', '#9d96f5'],
-      name: $t('page.home.faultTypeDistribution'),
+      name: $t('page.home.ticketCategoryDistribution'),
       type: 'pie',
       radius: ['45%', '75%'],
       avoidLabelOverlap: false,
@@ -50,13 +50,13 @@ const { domRef, updateOptions } = useEcharts(() => ({
   ]
 }));
 
-async function loadFaultTypes() {
-  const { data, error } = await fetchTicketFaultTypes();
+async function loadCategoryStats() {
+  const { data, error } = await fetchTicketCategoryStats();
 
   if (error || !data) return;
 
   updateOptions(opts => {
-    opts.series[0].data = data.map(item => ({ name: item.fault_type_name, value: item.count }));
+    opts.series[0].data = data.map(item => ({ name: item.category_name, value: item.count }));
 
     return opts;
   });
@@ -73,7 +73,7 @@ function updateLocale() {
 }
 
 async function init() {
-  await loadFaultTypes();
+  await loadCategoryStats();
 }
 
 watch(

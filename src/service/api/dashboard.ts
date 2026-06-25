@@ -17,7 +17,7 @@ export function fetchTicketTrend(days?: number) {
   });
 }
 
-/** ticket fault type distribution */
-export function fetchTicketFaultTypes() {
-  return request<Api.Dashboard.FaultTypeStat[]>({ url: '/dashboard/ticket-fault-types' });
+/** ticket category distribution, admin-api-v1.md 13.3 — replaces the old `/dashboard/ticket-fault-types` */
+export function fetchTicketCategoryStats() {
+  return request<Api.Dashboard.TicketCategoryStat[]>({ url: '/dashboard/ticket-categories' });
 }

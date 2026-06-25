@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { onMounted, ref, shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { getAssignTypeLabel } from '@/constants/ticket-assignment';
-import { fetchAutoAssignTicket, fetchDeleteTicket, fetchGetAssetCategoryList, fetchGetTicketList } from '@/service/api';
+import { fetchAutoAssignTicket, fetchDeleteTicket, fetchGetTicketList } from '@/service/api';
 import { defaultTransform, useUIPaginatedTable } from '@/hooks/common/table';
 import { useRouterPush } from '@/hooks/common/router';
 import { useAuth } from '@/hooks/business/auth';
@@ -37,19 +37,6 @@ const statusTagType: Record<Api.Ticket.TicketStatus, UI.ThemeColor> = {
 };
 
 const assignTypeLabel = getAssignTypeLabel();
-
-/** ticket categories reuse the asset-category table — there is no separate "ticket category" endpoint */
-const categoryLabel = ref<Record<number, string>>({});
-
-async function loadCategoryOptions() {
-  const { data, error } = await fetchGetAssetCategoryList();
-
-  if (!error) {
-    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.categoryName]));
-  }
-}
-
-onMounted(loadCategoryOptions);
 
 /** completed/closed/cancelled tickets are terminal — no auto-assign action makes sense there */
 function isAutoAssignable(status: Api.Ticket.TicketStatus): boolean {
@@ -97,7 +84,7 @@ function getInitSearchParams(): Api.Ticket.TicketSearchParams {
     keyword: undefined,
     status: undefined,
     priority: undefined,
-    faultType: undefined
+    categoryId: undefined
   };
 }
 
@@ -128,10 +115,10 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
       formatter: row => <ElTag type={statusTagType[row.status]}>{statusLabel[row.status]}</ElTag>
     },
     {
-      prop: 'categoryId',
+      prop: 'categoryName',
       label: $t('page.ticket.category'),
       width: 110,
-      formatter: row => (row.categoryId === null ? '-' : (categoryLabel.value[row.categoryId] ?? '-'))
+      formatter: row => row.categoryName ?? '-'
     },
     { prop: 'reporterName', label: $t('page.ticket.reporter'), width: 100 },
     {

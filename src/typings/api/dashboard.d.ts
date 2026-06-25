@@ -21,9 +21,11 @@ declare namespace Api {
       count: number;
     }
 
-    interface FaultTypeStat {
-      fault_type: string;
-      fault_type_name: string;
+    /** admin-api-v1.md 13.3 — replaces the old fault-type breakdown now that tickets use `category_id` */
+    interface TicketCategoryStat {
+      category_id: number;
+      category_name: string;
+      category_code: string;
       count: number;
     }
   }

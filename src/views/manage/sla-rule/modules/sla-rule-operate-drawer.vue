@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { loadEnabledTicketCategoryOptions } from '@/constants/ticket-category';
 import { fetchCreateSlaRule, fetchUpdateSlaRule } from '@/service/api';
 import { useForm, useFormRules } from '@/hooks/common/form';
 import { $t } from '@/locales';
@@ -36,7 +37,7 @@ const title = computed(() => {
 
 type Model = Pick<
   Api.Sla.SlaRule,
-  'name' | 'ticketCategory' | 'priority' | 'responseMinutes' | 'resolveMinutes' | 'enabled' | 'sortOrder'
+  'name' | 'categoryId' | 'priority' | 'responseMinutes' | 'resolveMinutes' | 'enabled' | 'sortOrder'
 >;
 
 const model = ref<Model>(createDefaultModel());
@@ -44,7 +45,7 @@ const model = ref<Model>(createDefaultModel());
 function createDefaultModel(): Model {
   return {
     name: '',
-    ticketCategory: null,
+    categoryId: null,
     priority: 'medium',
     responseMinutes: 30,
     resolveMinutes: 240,
@@ -60,14 +61,12 @@ const priorityOptions = computed<CommonType.Option<Api.Sla.Priority>[]>(() => [
   { label: $t('page.ticket.priorityType.low'), value: 'low' }
 ]);
 
-const ticketCategoryOptions = computed<CommonType.Option<Api.Sla.TicketCategory>[]>(() => [
-  { label: $t('page.ticket.faultTypeType.hardware'), value: 'hardware' },
-  { label: $t('page.ticket.faultTypeType.software'), value: 'software' },
-  { label: $t('page.ticket.faultTypeType.network'), value: 'network' },
-  { label: $t('page.ticket.faultTypeType.printer'), value: 'printer' },
-  { label: $t('page.ticket.faultTypeType.account'), value: 'account' },
-  { label: $t('page.ticket.faultTypeType.other'), value: 'other' }
-]);
+const categoryOptions = ref<CommonType.Option<number>[]>([]);
+
+async function loadCategoryOptions() {
+  const options = await loadEnabledTicketCategoryOptions();
+  categoryOptions.value = options.map(({ label, value }) => ({ label, value }));
+}
 
 const enabledOptions: CommonType.Option<number>[] = [
   { label: $t('page.manage.common.status.enable'), value: 1 },
@@ -129,12 +128,12 @@ async function handleSubmit() {
   emit('submitted');
 }
 
-watch(visible, () => {
+watch(visible, async () => {
   if (visible.value) {
     model.value = props.rowData
       ? {
           name: props.rowData.name,
-          ticketCategory: props.rowData.ticketCategory,
+          categoryId: props.rowData.categoryId,
           priority: props.rowData.priority,
           responseMinutes: props.rowData.responseMinutes,
           resolveMinutes: props.rowData.resolveMinutes,
@@ -143,6 +142,7 @@ watch(visible, () => {
         }
       : createDefaultModel();
     restoreValidation();
+    await loadCategoryOptions();
   }
 });
 </script>
@@ -153,9 +153,9 @@ watch(visible, () => {
       <ElFormItem :label="$t('page.manage.slaRule.name')" prop="name">
         <ElInput v-model="model.name" :placeholder="$t('page.manage.slaRule.form.name')" />
       </ElFormItem>
-      <ElFormItem :label="$t('page.manage.slaRule.ticketCategory')" prop="ticketCategory">
-        <ElSelect v-model="model.ticketCategory" clearable :placeholder="$t('page.manage.slaRule.form.ticketCategory')">
-          <ElOption v-for="{ label, value } in ticketCategoryOptions" :key="value" :label="label" :value="value" />
+      <ElFormItem :label="$t('page.ticket.category')" prop="categoryId">
+        <ElSelect v-model="model.categoryId" clearable :placeholder="$t('page.manage.slaRule.form.category')">
+          <ElOption v-for="{ label, value } in categoryOptions" :key="value" :label="label" :value="value" />
         </ElSelect>
       </ElFormItem>
       <ElFormItem :label="$t('page.manage.slaRule.priority')" prop="priority">

@@ -7,6 +7,7 @@ export * from './admin';
 export * from './asset';
 export * from './ticket';
 export * from './ticket-assignment';
+export * from './ticket-category';
 export * from './repair-record';
 export * from './operation-log';
 export * from './faq';

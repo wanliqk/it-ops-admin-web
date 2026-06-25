@@ -4,7 +4,6 @@ import { getAssignTypeLabel } from '@/constants/ticket-assignment';
 import {
   fetchAutoAssignTicket,
   fetchDeleteTicket,
-  fetchGetAssetCategoryList,
   fetchGetTicketDetail,
   fetchGetTicketRecords,
   fetchStartTicket
@@ -35,7 +34,6 @@ const ticketId = computed(() => Number(props.id));
 const detail = shallowRef<Api.Ticket.TicketDetail | null>(null);
 const records = shallowRef<Api.Ticket.TicketRecord[]>([]);
 const loading = ref(false);
-const categoryLabel = ref<Record<number, string>>({});
 
 async function loadDetail() {
   loading.value = true;
@@ -54,18 +52,7 @@ async function loadDetail() {
   }
 }
 
-async function loadCategoryOptions() {
-  const { data, error } = await fetchGetAssetCategoryList();
-
-  if (!error) {
-    categoryLabel.value = Object.fromEntries(data.map(item => [item.id, item.categoryName]));
-  }
-}
-
-onMounted(() => {
-  loadDetail();
-  loadCategoryOptions();
-});
+onMounted(loadDetail);
 
 const statusLabel: Record<Api.Ticket.TicketStatus, string> = {
   pending_accept: $t('page.ticket.statusType.pendingAccept'),
@@ -91,25 +78,11 @@ const statusTagType: Record<Api.Ticket.TicketStatus, UI.ThemeColor> = {
 
 const assignTypeLabel = getAssignTypeLabel();
 
-const categoryName = computed(() => {
-  if (!detail.value || detail.value.categoryId === null) return '-';
-  return categoryLabel.value[detail.value.categoryId] ?? '-';
-});
-
 const priorityLabel: Record<Api.Ticket.TicketPriority, string> = {
   low: $t('page.ticket.priorityType.low'),
   normal: $t('page.ticket.priorityType.normal'),
   high: $t('page.ticket.priorityType.high'),
   urgent: $t('page.ticket.priorityType.urgent')
-};
-
-const faultTypeLabel: Record<Api.Ticket.FaultType, string> = {
-  hardware: $t('page.ticket.faultTypeType.hardware'),
-  software: $t('page.ticket.faultTypeType.software'),
-  network: $t('page.ticket.faultTypeType.network'),
-  printer: $t('page.ticket.faultTypeType.printer'),
-  account: $t('page.ticket.faultTypeType.account'),
-  other: $t('page.ticket.faultTypeType.other')
 };
 
 const recordActionLabel: Record<string, string> = {
@@ -230,10 +203,7 @@ async function handleDelete() {
       </template>
       <ElDescriptions :column="2" border>
         <ElDescriptionsItem :label="$t('page.ticket.ticketNo')">{{ detail.ticketNo }}</ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('page.ticket.faultType')">
-          {{ faultTypeLabel[detail.faultType] }}
-        </ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('page.ticket.category')">{{ categoryName }}</ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.category')">{{ detail.categoryName ?? '-' }}</ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('page.ticket.priority')">
           {{ priorityLabel[detail.priority] }}
         </ElDescriptionsItem>
@@ -327,9 +297,7 @@ async function handleDelete() {
         <ElDescriptionsItem :label="$t('page.ticket.priority')">
           {{ priorityLabel[detail.priority] }}
         </ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('page.ticket.faultType')">
-          {{ faultTypeLabel[detail.faultType] }}
-        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('page.ticket.category')">{{ detail.categoryName ?? '-' }}</ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('page.ticket.slaResponseDeadline')">
           {{ detail.slaResponseDeadline ?? '-' }}
         </ElDescriptionsItem>

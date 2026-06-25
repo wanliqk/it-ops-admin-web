@@ -4,7 +4,7 @@ import { request } from '../request';
 interface SlaRuleRecord {
   id: number;
   name: string;
-  ticket_category: Api.Sla.TicketCategory | null;
+  category_id: number | null;
   priority: Api.Sla.Priority;
   response_minutes: number;
   resolve_minutes: number;
@@ -17,7 +17,7 @@ function toSlaRule(record: SlaRuleRecord): Api.Sla.SlaRule {
   return {
     id: record.id,
     name: record.name,
-    ticketCategory: record.ticket_category,
+    categoryId: record.category_id,
     priority: record.priority,
     responseMinutes: record.response_minutes,
     resolveMinutes: record.resolve_minutes,
@@ -39,7 +39,7 @@ export async function fetchSlaRuleList(params?: Api.Sla.SlaRuleSearchParams) {
     method: 'get',
     params: {
       priority: params?.priority,
-      ticket_category: params?.ticketCategory,
+      category_id: params?.categoryId,
       enabled: params?.enabled,
       page: params?.current,
       page_size: params?.size
@@ -63,7 +63,7 @@ export async function fetchSlaRuleList(params?: Api.Sla.SlaRuleSearchParams) {
 
 interface SlaRuleParams {
   name: string;
-  ticketCategory: Api.Sla.TicketCategory | null;
+  categoryId: number | null;
   priority: Api.Sla.Priority;
   responseMinutes: number;
   resolveMinutes: number;
@@ -74,7 +74,7 @@ interface SlaRuleParams {
 function toSlaRulePayload(params: SlaRuleParams) {
   return {
     name: params.name,
-    ticket_category: params.ticketCategory,
+    category_id: params.categoryId,
     priority: params.priority,
     response_minutes: params.responseMinutes,
     resolve_minutes: params.resolveMinutes,
