@@ -1,18 +1,18 @@
 <script setup lang="tsx">
-import { ref, shallowRef } from 'vue';
-import { getAssignTypeLabel } from '@/constants/ticket-assignment';
-import { fetchAutoAssignTicket, fetchDeleteTicket, fetchGetTicketList } from '@/service/api';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { fetchGetTicketList } from '@/service/api';
+import { useAuthStore } from '@/store/modules/auth';
 import { defaultTransform, useUIPaginatedTable } from '@/hooks/common/table';
 import { useRouterPush } from '@/hooks/common/router';
-import { useAuth } from '@/hooks/business/auth';
 import { $t } from '@/locales';
-import TicketCreateDrawer from './modules/ticket-create-drawer.vue';
-import TicketSearch from './modules/ticket-search.vue';
+import TicketSearch from '../list/modules/ticket-search.vue';
 
-defineOptions({ name: 'TicketManage' });
+defineOptions({ name: 'TicketMyList' });
 
+const route = useRoute();
 const { routerPushByKey } = useRouterPush();
-const { hasAuth } = useAuth();
+const authStore = useAuthStore();
 
 const statusLabel: Record<Api.Ticket.TicketStatus, string> = {
   pending_accept: $t('page.ticket.statusType.pendingAccept'),
@@ -36,13 +36,6 @@ const statusTagType: Record<Api.Ticket.TicketStatus, UI.ThemeColor> = {
   cancelled: 'danger'
 };
 
-const assignTypeLabel = getAssignTypeLabel();
-
-/** completed/closed/cancelled tickets are terminal — no auto-assign action makes sense there */
-function isAutoAssignable(status: Api.Ticket.TicketStatus): boolean {
-  return status !== 'completed' && status !== 'closed' && status !== 'cancelled';
-}
-
 const priorityLabel: Record<Api.Ticket.TicketPriority, string> = {
   low: $t('page.ticket.priorityType.low'),
   normal: $t('page.ticket.priorityType.normal'),
@@ -57,10 +50,7 @@ const priorityTagType: Record<Api.Ticket.TicketPriority, UI.ThemeColor> = {
   urgent: 'danger'
 };
 
-/**
- * combined SLA status for the list column: response_overdue / resolve_overdue can both be set at once, per
- * admin-api-v1.md 18.6/18.7 — show whichever apply, or "normal" if neither does
- */
+/** combined SLA status for the list column, see admin-api-v1.md 18.6/18.7 */
 function getSlaStatusLabels(row: Api.Ticket.Ticket): string[] {
   const labels: string[] = [];
 
@@ -77,14 +67,18 @@ function getSlaStatusLabels(row: Api.Ticket.Ticket): string[] {
 
 const searchParams = ref(getInitSearchParams());
 
+/** "我的工单" = tickets currently assigned to me for handling, not tickets I submitted */
 function getInitSearchParams(): Api.Ticket.TicketSearchParams {
+  const query = route.query;
+
   return {
     current: 1,
     size: 10,
     keyword: undefined,
-    status: undefined,
+    status: (query.status as Api.Ticket.TicketStatus) || undefined,
     priority: undefined,
-    categoryId: undefined
+    categoryId: undefined,
+    handlerId: Number(authStore.userInfo.userId)
   };
 }
 
@@ -121,19 +115,6 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
       formatter: row => row.categoryName ?? '-'
     },
     { prop: 'reporterName', label: $t('page.ticket.reporter'), width: 100 },
-    {
-      prop: 'assigneeName',
-      label: $t('page.ticket.assignee'),
-      width: 100,
-      formatter: row => row.assigneeName ?? $t('page.ticket.noAssignee')
-    },
-    {
-      prop: 'assignType',
-      label: $t('page.ticket.assignType'),
-      width: 130,
-      formatter: row => (row.assignType ? assignTypeLabel[row.assignType] : $t('page.ticket.assignTypeType.unassigned'))
-    },
-    { prop: 'assignedAt', label: $t('page.ticket.assignedAt'), width: 160, formatter: row => row.assignedAt ?? '-' },
     { prop: 'createTime', label: $t('common.createTime'), width: 160 },
     {
       prop: 'slaResponseDeadline',
@@ -173,82 +154,18 @@ const { columns, data, getData, getDataByPage, loading, mobilePagination } = use
       prop: 'operate',
       label: $t('common.operate'),
       align: 'center',
-      width: 240,
+      width: 100,
       formatter: row => (
-        <div class="flex-center gap-8px">
-          <ElButton type="primary" plain size="small" onClick={() => viewDetail(row.id)}>
-            {$t('common.detail')}
-          </ElButton>
-          {hasAuth('ticket:auto-assign') && isAutoAssignable(row.status) && (
-            <>
-              {row.assigneeId === null ? (
-                <ElButton type="success" plain size="small" onClick={() => handleAutoAssign(row.id, false)}>
-                  {$t('page.ticket.autoAssign')}
-                </ElButton>
-              ) : (
-                <ElPopconfirm
-                  title={$t('page.ticket.confirmReAutoAssign')}
-                  onConfirm={() => handleAutoAssign(row.id, true)}
-                >
-                  {{
-                    reference: () => (
-                      <ElButton type="warning" plain size="small">
-                        {$t('page.ticket.reAutoAssign')}
-                      </ElButton>
-                    )
-                  }}
-                </ElPopconfirm>
-              )}
-            </>
-          )}
-          {(row.status === 'pending_accept' || row.status === 'pending' || row.status === 'cancelled') && (
-            <ElPopconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(row.id)}>
-              {{
-                reference: () => (
-                  <ElButton v-permission="ticket:delete" type="danger" plain size="small">
-                    {$t('common.delete')}
-                  </ElButton>
-                )
-              }}
-            </ElPopconfirm>
-          )}
-        </div>
+        <ElButton type="primary" plain size="small" onClick={() => viewDetail(row.id)}>
+          {$t('common.detail')}
+        </ElButton>
       )
     }
   ]
 });
 
-const createVisible = shallowRef(false);
-
-function openCreate() {
-  createVisible.value = true;
-}
-
 function viewDetail(id: number) {
   routerPushByKey('ticket-detail', { params: { id: String(id) } });
-}
-
-async function handleDelete(id: number) {
-  const { error } = await fetchDeleteTicket(id);
-
-  if (!error) {
-    window.$message?.success($t('common.deleteSuccess'));
-    await getData();
-  }
-}
-
-async function handleAutoAssign(id: number, force: boolean) {
-  const { data: result, error } = await fetchAutoAssignTicket(id, force);
-
-  if (error || !result) return;
-
-  if (result.success) {
-    window.$message?.success(`${$t('page.ticket.autoAssignSuccess')}${result.assigneeName ?? ''}`);
-  } else {
-    window.$message?.warning(`${$t('page.ticket.autoAssignFail')}${result.failReason ?? ''}`);
-  }
-
-  await getData();
 }
 
 function resetSearchParams() {
@@ -262,21 +179,13 @@ function resetSearchParams() {
     <ElCard class="card-wrapper sm:flex-1-hidden">
       <template #header>
         <div class="flex items-center justify-between">
-          <p>{{ $t('page.ticket.title') }}</p>
-          <ElSpace>
-            <ElButton v-permission="'ticket:create'" type="primary" plain @click="openCreate">
-              <template #icon>
-                <icon-ic-round-plus class="text-icon" />
-              </template>
-              {{ $t('page.ticket.addTicket') }}
-            </ElButton>
-            <ElButton @click="getData">
-              <template #icon>
-                <icon-mdi-refresh class="text-icon" />
-              </template>
-              {{ $t('common.refresh') }}
-            </ElButton>
-          </ElSpace>
+          <p>{{ $t('route.ticket-manage_my') }}</p>
+          <ElButton @click="getData">
+            <template #icon>
+              <icon-mdi-refresh class="text-icon" />
+            </template>
+            {{ $t('common.refresh') }}
+          </ElButton>
         </div>
       </template>
       <div class="h-[calc(100%-52px)]">
@@ -293,7 +202,6 @@ function resetSearchParams() {
           @size-change="mobilePagination['size-change']"
         />
       </div>
-      <TicketCreateDrawer v-model:visible="createVisible" @submitted="getDataByPage" />
     </ElCard>
   </div>
 </template>

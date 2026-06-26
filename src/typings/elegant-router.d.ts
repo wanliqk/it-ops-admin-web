@@ -61,12 +61,8 @@ declare module "@elegant-router/types" {
     "manage_menu": "/manage/menu";
     "manage_operation-log": "/manage/operation-log";
     "manage_role": "/manage/role";
-    "manage_sla-rule": "/manage/sla-rule";
-    "manage_ticket-assignment-rule": "/manage/ticket-assignment-rule";
-    "manage_ticket-category": "/manage/ticket-category";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
-    "manage_work-group": "/manage/work-group";
     "multi-menu": "/multi-menu";
     "multi-menu_first": "/multi-menu/first";
     "multi-menu_first_child": "/multi-menu/first/child";
@@ -98,8 +94,15 @@ declare module "@elegant-router/types" {
     "plugin_tables_vtable": "/plugin/tables/vtable";
     "plugin_typeit": "/plugin/typeit";
     "plugin_video": "/plugin/video";
-    "ticket": "/ticket";
     "ticket-detail": "/ticket-detail/:id";
+    "ticket-manage": "/ticket-manage";
+    "ticket-manage_category": "/ticket-manage/category";
+    "ticket-manage_list": "/ticket-manage/list";
+    "ticket-manage_my": "/ticket-manage/my";
+    "ticket-manage_sla-rule": "/ticket-manage/sla-rule";
+    "ticket-manage_statistics": "/ticket-manage/statistics";
+    "ticket-manage_ticket-assignment-rule": "/ticket-manage/ticket-assignment-rule";
+    "ticket-manage_work-group": "/ticket-manage/work-group";
     "todo": "/todo";
     "todo_manage": "/todo/manage";
     "todo_my-todo": "/todo/my-todo";
@@ -164,8 +167,8 @@ declare module "@elegant-router/types" {
     | "multi-menu"
     | "notification"
     | "plugin"
-    | "ticket"
     | "ticket-detail"
+    | "ticket-manage"
     | "todo"
     | "user-center"
   >;
@@ -211,12 +214,8 @@ declare module "@elegant-router/types" {
     | "manage_menu"
     | "manage_operation-log"
     | "manage_role"
-    | "manage_sla-rule"
-    | "manage_ticket-assignment-rule"
-    | "manage_ticket-category"
     | "manage_user-detail"
     | "manage_user"
-    | "manage_work-group"
     | "multi-menu_first_child"
     | "multi-menu_second_child_home"
     | "notification"
@@ -240,7 +239,13 @@ declare module "@elegant-router/types" {
     | "plugin_typeit"
     | "plugin_video"
     | "ticket-detail"
-    | "ticket"
+    | "ticket-manage_category"
+    | "ticket-manage_list"
+    | "ticket-manage_my"
+    | "ticket-manage_sla-rule"
+    | "ticket-manage_statistics"
+    | "ticket-manage_ticket-assignment-rule"
+    | "ticket-manage_work-group"
     | "todo_manage"
     | "todo_my-todo"
     | "user-center"

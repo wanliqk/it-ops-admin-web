@@ -197,11 +197,14 @@ const local: App.I18n.Schema = {
     manage_role: '角色管理',
     manage_menu: '菜单管理',
     'manage_operation-log': '操作日志',
-    'manage_sla-rule': 'SLA规则管理',
-    'manage_work-group': '运维组管理',
-    'manage_ticket-assignment-rule': '自动分配规则',
-    'manage_ticket-category': '工单分类',
-    ticket: '工单管理',
+    'ticket-manage': '工单管理',
+    'ticket-manage_list': '工单列表',
+    'ticket-manage_my': '我的工单',
+    'ticket-manage_category': '工单分类',
+    'ticket-manage_work-group': '运维组管理',
+    'ticket-manage_ticket-assignment-rule': '自动分配规则',
+    'ticket-manage_sla-rule': 'SLA规则管理',
+    'ticket-manage_statistics': '工单统计',
     'ticket-detail': '工单详情',
     faq: '常见问题',
     notification: '通知中心',
@@ -778,6 +781,15 @@ const local: App.I18n.Schema = {
         normal: '普通',
         high: '高',
         urgent: '紧急'
+      },
+      statisticsType: {
+        all: '全部工单',
+        overdue: '已超时'
+      },
+      statistics: {
+        title: '工单统计',
+        description: '统计当前系统内全部工单状态数量',
+        chartTitle: '工单状态分布'
       },
       action: {
         assign: '分派',

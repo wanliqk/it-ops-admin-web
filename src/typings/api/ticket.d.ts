@@ -74,10 +74,29 @@ declare namespace Api {
         assetId?: number;
         startDate?: string;
         endDate?: string;
+        /** `is_overdue=true` filters tickets where response or resolve SLA is overdue; undocumented in admin-api-v1.md 9.1's param table but confirmed working against the live backend */
+        isOverdue?: boolean;
       } & Common.CommonSearchParams
     >;
 
     type TicketList = Common.PaginatingQueryRecord<Ticket>;
+
+    /**
+     * admin-api-v1.md 9.2 — `pendingAssign` counts tickets with the legacy `status = pending` value (the
+     * field is named `pending_assign` for display purposes only; it is NOT the `pending_assign` ticket
+     * status, which doesn't exist in {@link TicketStatus}).
+     */
+    interface TicketStatisticsSummary {
+      total: number;
+      pendingAssign: number;
+      pendingAccept: number;
+      processing: number;
+      pendingConfirm: number;
+      completed: number;
+      closed: number;
+      cancelled: number;
+      overdue: number;
+    }
 
     interface TicketRecord {
       id: number;

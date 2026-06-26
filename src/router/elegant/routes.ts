@@ -360,42 +360,6 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
-        name: 'manage_sla-rule',
-        path: '/manage/sla-rule',
-        component: 'view.manage_sla-rule',
-        meta: {
-          title: 'manage_sla-rule',
-          i18nKey: 'route.manage_sla-rule',
-          icon: 'mdi:timer-alert-outline',
-          order: 5,
-          roles: ['admin']
-        }
-      },
-      {
-        name: 'manage_ticket-assignment-rule',
-        path: '/manage/ticket-assignment-rule',
-        component: 'view.manage_ticket-assignment-rule',
-        meta: {
-          title: 'manage_ticket-assignment-rule',
-          i18nKey: 'route.manage_ticket-assignment-rule',
-          icon: 'mdi:account-arrow-right-outline',
-          order: 7,
-          roles: ['admin']
-        }
-      },
-      {
-        name: 'manage_ticket-category',
-        path: '/manage/ticket-category',
-        component: 'view.manage_ticket-category',
-        meta: {
-          title: 'manage_ticket-category',
-          i18nKey: 'route.manage_ticket-category',
-          icon: 'mdi:shape-plus-outline',
-          order: 8,
-          roles: ['admin']
-        }
-      },
-      {
         name: 'manage_user',
         path: '/manage/user',
         component: 'view.manage_user',
@@ -418,18 +382,6 @@ export const generatedRoutes: GeneratedRoute[] = [
           hideInMenu: true,
           roles: ['admin'],
           activeMenu: 'manage_user'
-        }
-      },
-      {
-        name: 'manage_work-group',
-        path: '/manage/work-group',
-        component: 'view.manage_work-group',
-        meta: {
-          title: 'manage_work-group',
-          i18nKey: 'route.manage_work-group',
-          icon: 'mdi:account-group-outline',
-          order: 6,
-          roles: ['admin']
         }
       }
     ]
@@ -756,17 +708,6 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
-    name: 'ticket',
-    path: '/ticket',
-    component: 'layout.base$view.ticket',
-    meta: {
-      title: 'ticket',
-      i18nKey: 'route.ticket',
-      icon: 'mdi:ticket-confirmation-outline',
-      order: 2
-    }
-  },
-  {
     name: 'ticket-detail',
     path: '/ticket-detail/:id',
     component: 'layout.base$view.ticket-detail',
@@ -775,8 +716,104 @@ export const generatedRoutes: GeneratedRoute[] = [
       title: 'ticket-detail',
       i18nKey: 'route.ticket-detail',
       hideInMenu: true,
-      activeMenu: 'ticket'
+      activeMenu: 'ticket-manage_list'
     }
+  },
+  {
+    name: 'ticket-manage',
+    path: '/ticket-manage',
+    component: 'layout.base',
+    meta: {
+      title: 'ticket-manage',
+      i18nKey: 'route.ticket-manage',
+      icon: 'mdi:ticket-confirmation-outline',
+      order: 2
+    },
+    children: [
+      {
+        name: 'ticket-manage_category',
+        path: '/ticket-manage/category',
+        component: 'view.ticket-manage_category',
+        meta: {
+          title: 'ticket-manage_category',
+          i18nKey: 'route.ticket-manage_category',
+          icon: 'mdi:shape-plus-outline',
+          order: 3,
+          roles: ['admin']
+        }
+      },
+      {
+        name: 'ticket-manage_list',
+        path: '/ticket-manage/list',
+        component: 'view.ticket-manage_list',
+        meta: {
+          title: 'ticket-manage_list',
+          i18nKey: 'route.ticket-manage_list',
+          icon: 'mdi:ticket-confirmation-outline',
+          order: 1
+        }
+      },
+      {
+        name: 'ticket-manage_my',
+        path: '/ticket-manage/my',
+        component: 'view.ticket-manage_my',
+        meta: {
+          title: 'ticket-manage_my',
+          i18nKey: 'route.ticket-manage_my',
+          icon: 'mdi:account-clock-outline',
+          order: 2,
+          roles: ['admin', 'it_staff']
+        }
+      },
+      {
+        name: 'ticket-manage_sla-rule',
+        path: '/ticket-manage/sla-rule',
+        component: 'view.ticket-manage_sla-rule',
+        meta: {
+          title: 'ticket-manage_sla-rule',
+          i18nKey: 'route.ticket-manage_sla-rule',
+          icon: 'mdi:timer-alert-outline',
+          order: 6,
+          roles: ['admin']
+        }
+      },
+      {
+        name: 'ticket-manage_statistics',
+        path: '/ticket-manage/statistics',
+        component: 'view.ticket-manage_statistics',
+        meta: {
+          title: 'ticket-manage_statistics',
+          i18nKey: 'route.ticket-manage_statistics',
+          icon: 'mdi:chart-box-outline',
+          order: 7,
+          roles: ['admin']
+        }
+      },
+      {
+        name: 'ticket-manage_ticket-assignment-rule',
+        path: '/ticket-manage/ticket-assignment-rule',
+        component: 'view.ticket-manage_ticket-assignment-rule',
+        meta: {
+          title: 'ticket-manage_ticket-assignment-rule',
+          i18nKey: 'route.ticket-manage_ticket-assignment-rule',
+          icon: 'mdi:account-arrow-right-outline',
+          order: 5,
+          roles: ['admin']
+        }
+      },
+      {
+        name: 'ticket-manage_work-group',
+        path: '/ticket-manage/work-group',
+        component: 'view.ticket-manage_work-group',
+        meta: {
+          title: 'ticket-manage_work-group',
+          i18nKey: 'route.ticket-manage_work-group',
+          icon: 'mdi:account-group-outline',
+          order: 4,
+          roles: ['admin']
+        }
+      }
+    ]
   },
   {
     name: 'todo',

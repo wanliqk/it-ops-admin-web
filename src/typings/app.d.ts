@@ -949,6 +949,15 @@ declare namespace App {
             high: string;
             urgent: string;
           };
+          statisticsType: {
+            all: string;
+            overdue: string;
+          };
+          statistics: {
+            title: string;
+            description: string;
+            chartTitle: string;
+          };
           action: {
             assign: string;
             start: string;

@@ -197,11 +197,14 @@ const local: App.I18n.Schema = {
     manage_role: 'Role Manage',
     manage_menu: 'Menu Manage',
     'manage_operation-log': 'Operation Logs',
-    'manage_sla-rule': 'SLA Rules',
-    'manage_work-group': 'Work Group Management',
-    'manage_ticket-assignment-rule': 'Auto-assignment Rules',
-    'manage_ticket-category': 'Ticket Categories',
-    ticket: 'Ticket Manage',
+    'ticket-manage': 'Ticket Manage',
+    'ticket-manage_list': 'Ticket List',
+    'ticket-manage_my': 'My Tickets',
+    'ticket-manage_category': 'Ticket Categories',
+    'ticket-manage_work-group': 'Work Group Management',
+    'ticket-manage_ticket-assignment-rule': 'Auto-assignment Rules',
+    'ticket-manage_sla-rule': 'SLA Rules',
+    'ticket-manage_statistics': 'Ticket Statistics',
     'ticket-detail': 'Ticket Detail',
     faq: 'FAQ',
     notification: 'Notification Center',
@@ -780,6 +783,15 @@ const local: App.I18n.Schema = {
         normal: 'Normal',
         high: 'High',
         urgent: 'Urgent'
+      },
+      statisticsType: {
+        all: 'All Tickets',
+        overdue: 'Overdue'
+      },
+      statistics: {
+        title: 'Ticket Statistics',
+        description: 'Counts of all tickets in the system by status',
+        chartTitle: 'Ticket Status Distribution'
       },
       action: {
         assign: 'Assign',

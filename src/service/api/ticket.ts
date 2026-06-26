@@ -85,6 +85,7 @@ export async function fetchGetTicketList(params?: Api.Ticket.TicketSearchParams)
       asset_id: params?.assetId,
       start_date: params?.startDate,
       end_date: params?.endDate,
+      is_overdue: params?.isOverdue || undefined,
       page: params?.current,
       page_size: params?.size
     }
@@ -343,4 +344,46 @@ export function fetchDeleteTicket(ticketId: number) {
     url: `/tickets/${ticketId}`,
     method: 'delete'
   });
+}
+
+/** backend shape of the ticket status summary, see admin-api-v1.md 9.2 */
+interface TicketStatisticsSummaryRecord {
+  total: number;
+  pending_assign: number;
+  pending_accept: number;
+  processing: number;
+  pending_confirm: number;
+  completed: number;
+  closed: number;
+  cancelled: number;
+  overdue: number;
+}
+
+/** get ticket status summary counts, used by the statistics cards on the ticket list/statistics pages */
+export async function fetchGetTicketStatisticsSummary() {
+  const result = await request<TicketStatisticsSummaryRecord>({
+    url: '/tickets/statistics/summary',
+    method: 'get'
+  });
+
+  if (result.error || !result.data) {
+    return { ...result, data: null };
+  }
+
+  const record = result.data;
+
+  return {
+    ...result,
+    data: {
+      total: record.total,
+      pendingAssign: record.pending_assign,
+      pendingAccept: record.pending_accept,
+      processing: record.processing,
+      pendingConfirm: record.pending_confirm,
+      completed: record.completed,
+      closed: record.closed,
+      cancelled: record.cancelled,
+      overdue: record.overdue
+    } satisfies Api.Ticket.TicketStatisticsSummary
+  };
 }
