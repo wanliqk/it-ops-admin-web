@@ -257,7 +257,7 @@ function resetSearchParams() {
 </script>
 
 <template>
-  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+  <div class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <TicketSearch v-model:model="searchParams" @reset="resetSearchParams" @search="getDataByPage" />
     <ElCard class="card-wrapper sm:flex-1-hidden">
       <template #header>

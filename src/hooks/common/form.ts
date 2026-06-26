@@ -86,7 +86,7 @@ export function useForm() {
   }
 
   async function restoreValidation() {
-    formRef.value?.resetFields();
+    formRef.value?.clearValidate();
   }
 
   return {

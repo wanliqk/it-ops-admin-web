@@ -53,7 +53,7 @@ function filterTree(nodes: Api.TicketCategory.TicketCategoryTreeNode[]): Api.Tic
 }
 
 const { columns, columnChecks, data, getData, loading } = useUITable({
-  api: () => fetchGetTicketCategoryTree({ status: searchParams.value.status }),
+  api: () => fetchGetTicketCategoryTree(),
   transform: response => {
     const { data: tree, error } = response;
     return error ? [] : filterTree(tree);
@@ -198,6 +198,8 @@ function resetSearchParams() {
       <template #header>
         <div class="flex items-center justify-between">
           <p>{{ $t('page.manage.ticketCategory.title') }}</p>
+          <!-- <TableHeaderOperation v-model:columns="columnChecks" :loading="loading" @add="handleAdd" @refresh="getData" /> -->
+
           <TableHeaderOperation v-model:columns="columnChecks" :loading="loading" @add="handleAdd" @refresh="getData">
             <template #default>
               <ElButton v-permission="'ticket_category:create'" type="primary" plain @click="handleAdd">

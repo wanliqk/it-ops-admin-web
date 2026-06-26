@@ -190,7 +190,7 @@ async function handleDelete() {
 </script>
 
 <template>
-  <div v-loading="loading" class="min-h-500px flex-col-stretch gap-16px">
+  <div v-loading="loading" class="flex-col-stretch gap-16px">
     <ElCard v-if="detail" class="card-wrapper">
       <template #header>
         <div class="flex items-center justify-between">
