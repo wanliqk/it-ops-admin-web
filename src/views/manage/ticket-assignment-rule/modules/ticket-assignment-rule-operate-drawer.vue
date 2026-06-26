@@ -186,9 +186,9 @@ async function handleSubmit() {
 watch(visible, async () => {
   if (!visible.value) return;
 
-  await loadStaticOptions();
-
-  if (props.rowData) {
+  // set the model synchronously first so the drawer never flashes stale data while the
+  // options below are still being fetched
+  if (props.operateType === 'edit' && props.rowData) {
     model.value = {
       name: props.rowData.name,
       categoryId: props.rowData.categoryId,
@@ -200,18 +200,23 @@ watch(visible, async () => {
       sortOrder: props.rowData.sortOrder,
       remark: props.rowData.remark
     };
+  } else {
+    model.value = createDefaultModel();
+  }
 
+  restoreValidation();
+
+  await loadStaticOptions();
+
+  if (props.operateType === 'edit' && props.rowData) {
     if (props.rowData.targetUserId !== null && props.rowData.targetUserName !== null) {
       targetUserOptions.value = [{ label: props.rowData.targetUserName, value: props.rowData.targetUserId }];
     } else {
       await loadTargetUserOptions();
     }
   } else {
-    model.value = createDefaultModel();
     await loadTargetUserOptions();
   }
-
-  restoreValidation();
 });
 </script>
 

@@ -110,7 +110,7 @@ async function handleSubmit() {
 
 watch(visible, () => {
   if (visible.value) {
-    if (props.rowData) {
+    if (props.operateType === 'edit' && props.rowData) {
       model.value = {
         groupName: props.rowData.groupName,
         groupCode: props.rowData.groupCode,

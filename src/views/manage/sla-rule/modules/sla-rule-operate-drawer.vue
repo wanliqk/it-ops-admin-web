@@ -130,17 +130,18 @@ async function handleSubmit() {
 
 watch(visible, async () => {
   if (visible.value) {
-    model.value = props.rowData
-      ? {
-          name: props.rowData.name,
-          categoryId: props.rowData.categoryId,
-          priority: props.rowData.priority,
-          responseMinutes: props.rowData.responseMinutes,
-          resolveMinutes: props.rowData.resolveMinutes,
-          enabled: props.rowData.enabled,
-          sortOrder: props.rowData.sortOrder
-        }
-      : createDefaultModel();
+    model.value =
+      props.operateType === 'edit' && props.rowData
+        ? {
+            name: props.rowData.name,
+            categoryId: props.rowData.categoryId,
+            priority: props.rowData.priority,
+            responseMinutes: props.rowData.responseMinutes,
+            resolveMinutes: props.rowData.resolveMinutes,
+            enabled: props.rowData.enabled,
+            sortOrder: props.rowData.sortOrder
+          }
+        : createDefaultModel();
     restoreValidation();
     await loadCategoryOptions();
   }
