@@ -1078,6 +1078,9 @@ declare namespace App {
           readAll: string;
           goToBusiness: string;
           pleaseSelect: string;
+          viewMore: string;
+          emptyUnread: string;
+          emptyRead: string;
           form: {
             keyword: string;
             readStatus: string;

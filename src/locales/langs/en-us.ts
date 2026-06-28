@@ -914,6 +914,9 @@ const local: App.I18n.Schema = {
       readAll: 'Mark All as Read',
       goToBusiness: 'Go to',
       pleaseSelect: 'Please select at least one item',
+      viewMore: 'View More',
+      emptyUnread: 'No unread notifications',
+      emptyRead: 'No read notifications',
       form: {
         keyword: 'Please enter title or content keyword',
         readStatus: 'Please select read status',

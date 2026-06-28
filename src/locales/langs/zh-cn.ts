@@ -911,6 +911,9 @@ const local: App.I18n.Schema = {
       readAll: '全部标记已读',
       goToBusiness: '前往查看',
       pleaseSelect: '请先选择数据',
+      viewMore: '查看更多',
+      emptyUnread: '暂无未读消息',
+      emptyRead: '暂无已读消息',
       form: {
         keyword: '请输入标题或内容关键字',
         readStatus: '请选择阅读状态',
