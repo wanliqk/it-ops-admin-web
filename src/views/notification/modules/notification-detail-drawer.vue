@@ -52,7 +52,7 @@ function handleJump() {
 
 <template>
   <ElDrawer v-model="visible" :title="$t('page.notification.detail')" :size="420">
-    <ElDescriptions v-if="rowData" :column="1" border>
+    <ElDescriptions v-if="rowData" :column="1" :label-width="80" border>
       <ElDescriptionsItem :label="$t('page.notification.notificationTitle')">{{ rowData.title }}</ElDescriptionsItem>
       <ElDescriptionsItem :label="$t('page.notification.content')">{{ rowData.content }}</ElDescriptionsItem>
       <ElDescriptionsItem :label="$t('page.notification.bizType')">

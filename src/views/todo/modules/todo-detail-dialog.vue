@@ -59,7 +59,7 @@ function handleGoProcess() {
 <template>
   <ElDialog v-model="visible" :title="$t('page.todo.detail')" width="600px">
     <div v-loading="loading">
-      <ElDescriptions v-if="detail" :column="2" border>
+      <ElDescriptions v-if="detail" label-width="100" :column="2" border>
         <ElDescriptionsItem :label="$t('page.todo.todoNo')">{{ detail.todoNo }}</ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('page.todo.status')">
           <ElTag>{{ statusLabel[detail.status] }}</ElTag>
