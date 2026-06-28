@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue';
+import { computed, shallowRef, useTemplateRef, watch } from 'vue';
 import { fetchAssignRolePermissions, fetchGetPermissionsGrouped, fetchGetRolePermissions } from '@/service/api';
 import { $t } from '@/locales';
 
@@ -45,6 +45,8 @@ async function getTree() {
   }
 }
 
+const treeRef = useTemplateRef<InstanceType<typeof ElTree>>('treeRef');
+
 const checks = shallowRef<(number | string)[]>([]);
 
 async function getChecks() {
@@ -56,7 +58,8 @@ async function getChecks() {
 }
 
 async function handleSubmit() {
-  const permissionIds = checks.value.filter((id): id is number => typeof id === 'number');
+  const checkedKeys = treeRef.value?.getCheckedKeys() ?? [];
+  const permissionIds = checkedKeys.filter((id): id is number => typeof id === 'number');
 
   const { error } = await fetchAssignRolePermissions(props.roleId, permissionIds);
 
@@ -82,7 +85,7 @@ watch(visible, val => {
 <template>
   <ElDialog v-model="visible" :title="title" preset="card" class="w-480px">
     <ElTree
-      v-model:checked-keys="checks"
+      ref="treeRef"
       :data="tree"
       node-key="id"
       show-checkbox
