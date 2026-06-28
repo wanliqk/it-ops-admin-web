@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { fetchCreateAsset, fetchGetAssetCategoryList, fetchGetUserOptions, fetchUpdateAsset } from '@/service/api';
 import { useForm, useFormRules } from '@/hooks/common/form';
 import { $t } from '@/locales';
@@ -88,8 +88,6 @@ async function loadOptions() {
   }
 }
 
-onMounted(loadOptions);
-
 const statusOptions = computed<CommonType.Option<Api.Asset.AssetStatus>[]>(() => [
   { label: $t('page.assetManage.asset.statusType.inUse'), value: 'in_use' },
   { label: $t('page.assetManage.asset.statusType.idle'), value: 'idle' },
@@ -137,6 +135,7 @@ watch(visible, () => {
   if (visible.value) {
     handleInitModel();
     restoreValidation();
+    loadOptions();
   }
 });
 </script>

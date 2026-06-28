@@ -114,8 +114,9 @@ const activeStatKey = computed(() =>
   getActiveTicketStatKey({ status: searchParams.value.status, isOverdue: searchParams.value.isOverdue })
 );
 
-const { columns, data, getData, getDataByPage, loading, mobilePagination } = useUIPaginatedTable({
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination } = useUIPaginatedTable({
   immediate: false,
+  columnsStorageKey: 'ticket-list',
   paginationProps: {
     currentPage: searchParams.value.current,
     pageSize: searchParams.value.size
@@ -320,20 +321,16 @@ onMounted(async () => {
       <template #header>
         <div class="flex items-center justify-between">
           <p>{{ $t('page.ticket.title') }}</p>
-          <ElSpace>
-            <ElButton v-permission="'ticket:create'" type="primary" plain @click="openCreate">
-              <template #icon>
-                <icon-ic-round-plus class="text-icon" />
-              </template>
-              {{ $t('page.ticket.addTicket') }}
-            </ElButton>
-            <ElButton @click="getData">
-              <template #icon>
-                <icon-mdi-refresh class="text-icon" />
-              </template>
-              {{ $t('common.refresh') }}
-            </ElButton>
-          </ElSpace>
+          <TableHeaderOperation v-model:columns="columnChecks" :loading="loading" @refresh="getData">
+            <template #default>
+              <ElButton v-permission="'ticket:create'" type="primary" plain @click="openCreate">
+                <template #icon>
+                  <icon-ic-round-plus class="text-icon" />
+                </template>
+                {{ $t('page.ticket.addTicket') }}
+              </ElButton>
+            </template>
+          </TableHeaderOperation>
         </div>
       </template>
       <div class="h-[calc(100%-52px)]">

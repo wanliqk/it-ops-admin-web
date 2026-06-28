@@ -40,5 +40,7 @@ declare namespace StorageType {
 
     /** The last login user id */
     lastLoginUserId: string;
+    /** Saved table column visibility/order, keyed by an explicit storage key per table */
+    tableColumnSettings: Record<string, { prop: string; checked: boolean }[]>;
   }
 }

@@ -6,6 +6,7 @@ import type { PaginationData, TableColumnCheck, UseTableOptions } from '@sa/hook
 import type { FlatResponseData } from '@sa/axios';
 import { jsonClone } from '@sa/utils';
 import { useAppStore } from '@/store/modules/app';
+import { localStg } from '@/utils/storage';
 import { $t } from '@/locales';
 
 type RemoveReadonly<T> = {
@@ -26,6 +27,12 @@ export type UseUITableOptions<ResponseData, ApiData, Pagination extends boolean>
    * @returns true if the column is visible, false otherwise
    */
   getColumnVisible?: (column: UI.TableColumn<ApiData>) => boolean;
+  /**
+   * key used to persist the user's column visibility/order choices in local storage
+   *
+   * @default undefined (no persistence)
+   */
+  columnsStorageKey?: string;
 };
 
 const SELECTION_KEY = '__selection__';
@@ -40,7 +47,8 @@ export function useUITable<ResponseData, ApiData>(options: UseUITableOptions<Res
 
   const result = useTable<ResponseData, ApiData, UI.TableColumn<ApiData>, false>({
     ...options,
-    getColumnChecks: cols => getColumnChecks(cols, options.getColumnVisible),
+    getColumnChecks: cols =>
+      mergeStoredColumnChecks(options.columnsStorageKey, getColumnChecks(cols, options.getColumnVisible)),
     getColumns
   });
 
@@ -58,6 +66,10 @@ export function useUITable<ResponseData, ApiData>(options: UseUITableOptions<Res
         result.reloadColumns();
       }
     );
+
+    if (options.columnsStorageKey) {
+      watch(result.columnChecks, checks => persistColumnChecks(options.columnsStorageKey!, checks), { deep: true });
+    }
   });
 
   onScopeDispose(() => {
@@ -130,7 +142,8 @@ export function useUIPaginatedTable<ResponseData, ApiData>(options: UseUIPaginat
   const result = useTable<ResponseData, ApiData, UI.TableColumn<ApiData>, true>({
     ...options,
     pagination: true,
-    getColumnChecks: cols => getColumnChecks(cols, options.getColumnVisible),
+    getColumnChecks: cols =>
+      mergeStoredColumnChecks(options.columnsStorageKey, getColumnChecks(cols, options.getColumnVisible)),
     getColumns,
     onFetched: data => {
       pagination.total = data.total;
@@ -160,6 +173,10 @@ export function useUIPaginatedTable<ResponseData, ApiData>(options: UseUIPaginat
 
       await result.getData();
     });
+
+    if (options.columnsStorageKey) {
+      watch(result.columnChecks, checks => persistColumnChecks(options.columnsStorageKey!, checks), { deep: true });
+    }
   });
 
   onScopeDispose(() => {
@@ -254,6 +271,42 @@ export function defaultTransform<ApiData>(
     pageSize: 10,
     total: 0
   };
+}
+
+/** merge the saved column visibility/order (if any) into the freshly computed column checks */
+function mergeStoredColumnChecks(key: string | undefined, checks: TableColumnCheck[]) {
+  if (!key) return checks;
+
+  const stored = localStg.get('tableColumnSettings')?.[key];
+
+  if (!stored) return checks;
+
+  const remaining = new Map(checks.map(item => [item.prop, item]));
+
+  const merged: TableColumnCheck[] = [];
+
+  stored.forEach(({ prop, checked }) => {
+    const item = remaining.get(prop);
+
+    if (item) {
+      merged.push({ ...item, checked });
+      remaining.delete(prop);
+    }
+  });
+
+  // append columns that aren't in the saved settings yet (e.g. newly added columns)
+  remaining.forEach(item => merged.push(item));
+
+  return merged;
+}
+
+function persistColumnChecks(key: string, checks: TableColumnCheck[]) {
+  const all = localStg.get('tableColumnSettings') ?? {};
+
+  localStg.set('tableColumnSettings', {
+    ...all,
+    [key]: checks.map(({ prop, checked }) => ({ prop, checked }))
+  });
 }
 
 function getColumnChecks<Column extends UI.TableColumn<any>>(
