@@ -96,7 +96,12 @@ function handleGoMore() {
     </template>
   </ElDropdown>
 
-  <ElDialog v-model="dialogVisible" :title="detail?.title ?? $t('page.notification.detail')" width="800px">
+  <ElDialog
+    v-model="dialogVisible"
+    :title="detail?.title ?? $t('page.notification.detail')"
+    width="800px"
+    append-to-body
+  >
     <div v-if="detail" class="px-20px">
       <div class="text-placeholder mb-16px flex items-center gap-16px text-13px">
         <span class="flex-y-center gap-4px">
